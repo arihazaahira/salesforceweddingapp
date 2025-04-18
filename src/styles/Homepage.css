@@ -1,0 +1,185 @@
+/* Base Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Playfair Display', serif;
+    color: #333;
+    line-height: 1.6;
+  }
+  
+  .wedding-homepage {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    flex: 1 0 auto;
+  }
+  
+  .hero-overlay {
+    color: white;
+    z-index: 1;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .hero-overlay h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-weight: 700;
+  }
+  
+  .hero-overlay p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Main Content */
+  .main-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: -50px auto 0;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .feature-section {
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .feature-section:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  .section-icon {
+    background: #f8e1e4;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: #d4a5a5;
+  }
+  
+  .ceremony-section .section-icon {
+    background: #e1f0f8;
+    color: #a5b8d4;
+  }
+  
+  .couple-section .section-icon {
+    background: #f8e1e4;
+    color: #d4a5a5;
+  }
+  
+  .list-section .section-icon {
+    background: #e4f8e1;
+    color: #a5d4b0;
+  }
+  
+  .feature-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #555;
+    font-weight: 600;
+  }
+  
+  .feature-section p {
+    margin-bottom: 2rem;
+    color: #666;
+    font-size: 1rem;
+  }
+  
+  /* Action Button */
+  .action-button {
+    background: linear-gradient(135deg, #d4a5a5, #c08e8e);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+    font-family: 'Playfair Display', serif;
+    min-width: 200px;
+  }
+  
+  .action-button:hover {
+    background: linear-gradient(135deg, #c08e8e, #a57878);
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .action-button svg {
+    margin-right: 0.5rem;
+  }
+  
+  /* Footer */
+  .wedding-footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+    margin-top: auto;
+    flex-shrink: 0;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .hero-overlay h1 {
+      font-size: 2.5rem;
+    }
+    
+    .hero-overlay p {
+      font-size: 1.2rem;
+    }
+    
+    .main-content {
+      grid-template-columns: 1fr;
+      padding: 2rem 1rem;
+      margin-top: -30px;
+    }
+    
+    .feature-section {
+      padding: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .hero-overlay h1 {
+      font-size: 2rem;
+    }
+    
+    .action-button {
+      min-width: 160px;
+      padding: 0.7rem 1.2rem;
+    }
+  }

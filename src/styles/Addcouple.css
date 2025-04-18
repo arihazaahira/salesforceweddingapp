@@ -1,0 +1,213 @@
+/* AddCouple.css - Version romantique */
+
+.add-couple-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #fff9fb; /* Fond rose très clair */
+  font-family: 'Playfair Display', serif;
+  color: #333;
+}
+
+.add-couple-header {
+  background: linear-gradient(rgba(109, 67, 84, 0.7), rgba(109, 67, 84, 0.7)), 
+              url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+  height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  padding: 0 2rem;
+  position: relative;
+}
+
+.add-couple-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(211, 134, 155, 0.3), rgba(149, 97, 143, 0.3));
+}
+
+.add-couple-header h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+
+.add-couple-form {
+  max-width: 700px;
+  width: 90%;
+  margin: -50px auto 50px;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(173, 117, 138, 0.2);
+  position: relative;
+  z-index: 2;
+  border: 1px solid #f0d6df;
+}
+
+.add-couple-form::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border: 2px dashed #e8b4c8;
+  border-radius: 20px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.add-couple-form form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.add-couple-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #6d4354;
+  font-size: 0.95rem;
+}
+
+.add-couple-form input,
+.add-couple-form textarea,
+.add-couple-form select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #e8b4c8;
+  border-radius: 8px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #fff9fb;
+}
+
+.add-couple-form input:focus,
+.add-couple-form textarea:focus,
+.add-couple-form select:focus {
+  border-color: #d3869b;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(211, 134, 155, 0.2);
+}
+
+.add-couple-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Full width fields */
+.add-couple-form .full-width {
+  grid-column: 1 / -1;
+}
+
+.buttons-container {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.submit-button {
+  background: linear-gradient(135deg, #e8b4c8, #d3869b);
+  color: white;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Playfair Display', serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  max-width: 250px;
+  box-shadow: 0 4px 6px rgba(211, 134, 155, 0.3);
+}
+
+.submit-button:hover {
+  background: linear-gradient(135deg, #d3869b, #c06c84);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(211, 134, 155, 0.4);
+}
+
+.submit-button::before {
+  content: "❤";
+  margin-right: 10px;
+  font-size: 1.2rem;
+  animation: pulse 1.5s infinite;
+}
+
+.cancel-button {
+  background: white;
+  color: #6d4354;
+  border: 2px solid #e8b4c8;
+  padding: 1rem 1.5rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Playfair Display', serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  max-width: 250px;
+}
+
+.cancel-button:hover {
+  background: #fff9fb;
+  border-color: #d3869b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(173, 117, 138, 0.1);
+}
+
+/* Animation for heart */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .add-couple-form form {
+      grid-template-columns: 1fr;
+  }
+  
+  .add-couple-header h2 {
+      font-size: 2rem;
+  }
+  
+  .buttons-container {
+      flex-direction: column;
+  }
+  
+  .submit-button,
+  .cancel-button {
+      max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-couple-form {
+      padding: 1.5rem;
+  }
+  
+  .add-couple-header h2 {
+      font-size: 1.8rem;
+  }
+}
