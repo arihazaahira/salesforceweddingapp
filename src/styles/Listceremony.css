@@ -1,0 +1,240 @@
+/* ListCeremony.css */
+
+/* Base Styles */
+.ceremony-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+    background-color: #f9f5f0;
+  }
+  
+  /* Header Styles */
+  .ceremony-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    padding-bottom: 1rem;
+  }
+  
+  .ceremony-header h1 {
+    font-size: 2.5rem;
+    color: #5d4037;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  
+  .ceremony-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(to right, #d4a373, #f8e5e5, #d4a373);
+  }
+  
+  /* Filter Controls */
+  .filter-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .filter-controls select {
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    border: 1px solid #d4a373;
+    background-color: white;
+    font-family: inherit;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .filter-controls select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.3);
+  }
+  
+  .add-button {
+    background: linear-gradient(135deg, #d4a373, #b58357);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(181, 131, 87, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .add-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(181, 131, 87, 0.3);
+  }
+  
+  /* Table Styles */
+  .ceremonies-table {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    margin-top: 2rem;
+    overflow: hidden;
+  }
+  
+  .table-wrapper {
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #f0e6d9;
+  }
+  
+  th {
+    background-color: #f8f4f0;
+    color: #5d4037;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+  }
+  
+  tr:hover {
+    background-color: #faf7f4;
+  }
+  
+  /* Status Badges */
+  .status-badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  
+  .status-badge.confirmé {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
+  
+  .status-badge.planifié {
+    background-color: #e3f2fd;
+    color: #1565c0;
+  }
+  
+  .status-badge.annulé {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+  
+  /* Action Buttons */
+  .actions-cell {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .edit-btn, .delete-btn {
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .edit-btn {
+    background-color: #4fc3f7;
+    color: white;
+  }
+  
+  .delete-btn {
+    background-color: #ff7043;
+    color: white;
+  }
+  
+  .edit-btn:hover {
+    background-color: #29b6f6;
+    transform: scale(1.1);
+  }
+  
+  .delete-btn:hover {
+    background-color: #ff5722;
+    transform: scale(1.1);
+  }
+  
+  /* Loading and Error States */
+  .loading-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #d4a373;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 2rem auto;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .error-message {
+    color: #d32f2f;
+    background-color: #ffebee;
+    padding: 1rem;
+    border-radius: 6px;
+    text-align: center;
+    margin: 2rem auto;
+    max-width: 500px;
+  }
+  
+  .no-data {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    font-style: italic;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .ceremony-container {
+      padding: 1rem;
+    }
+    
+    th, td {
+      padding: 0.8rem 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .filter-controls {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .add-button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
