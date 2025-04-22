@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fetchAllCeremonies } from '../services/ListCeremonyService';
 import '../styles/Listceremony.css';
 
@@ -6,6 +7,7 @@ const ListCeremony = () => {
   const [ceremonies, setCeremonies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadData = async () => {
@@ -45,6 +47,14 @@ const ListCeremony = () => {
               <td>{ceremony.Date_and_Time__c}</td>
               <td>{ceremony.Location__c || '-'}</td>
               <td>{ceremony.Description__c || '-'}</td>
+              <td>
+              <button
+                  className="btn-details"
+                  onClick={() => navigate(`/ceremony/${ceremony.Id}`)}
+                >
+                  Voir Détails
+                </button>
+                </td>
             </tr>
           ))}
         </tbody>
