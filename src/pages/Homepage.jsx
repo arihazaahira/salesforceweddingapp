@@ -1,38 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaHeart, FaRing, FaCalendarAlt, FaPlus, FaArrowRight } from 'react-icons/fa';
 import Footer from '../components/Footer';
+import CeremonyModal from '../pages/Addceremony';
+import CoupleModal from '../pages/Addcouple';
 
 const Homepage = () => {
   const navigate = useNavigate();
+  const [ceremonyModalOpen, setCeremonyModalOpen] = useState(false);
+  const [coupleModalOpen, setCoupleModalOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans flex flex-col">
       {/* Hero Section */}
-        <div className="relative h-screen w-full bg-cover bg-center"
-          style={{ backgroundImage: "url('/assets/images/Home_bg.jpg')" }}>
-          <div className="absolute inset-0 bg-black opacity-50"></div>
-          <div className="relative max-w-7xl mx-auto px-6 h-full flex flex-col justify-center items-center text-white text-center z-10">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-          Votre Mariage de Rêve Commence Ici
-            </h1>
-            <p className="text-xl md:text-2xl max-w-2xl opacity-90">
-          Planifiez chaque détail avec élégance et simplicité
-            </p>
-            <button
-          onClick={() => {
-            document.querySelector('.grid').scrollIntoView({ 
-              behavior: 'smooth'
-            });
-          }}
-          className="mt-8 px-8 py-3 bg-white text-purple-700 rounded-full font-semibold shadow-lg hover:bg-opacity-90 transition-all transform hover:-translate-y-1 flex items-center"
-            >
-          Commencer <FaArrowRight className="ml-2" />
-            </button>
-          </div>
+      <div className="relative h-screen w-full bg-cover bg-center"
+        style={{ backgroundImage: "url('/assets/images/Home_bg.jpg')" }}>
+        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <div className="relative max-w-7xl mx-auto px-6 h-full flex flex-col justify-center items-center text-white text-center z-10">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+            Votre Mariage de Rêve Commence Ici
+          </h1>
+          <p className="text-xl md:text-2xl max-w-2xl opacity-90">
+            Planifiez chaque détail avec élégance et simplicité
+          </p>
+          <button
+            onClick={() => {
+              document.querySelector('.grid').scrollIntoView({ 
+                behavior: 'smooth'
+              });
+            }}
+            className="mt-8 px-8 py-3 bg-white text-purple-700 rounded-full font-semibold shadow-lg hover:bg-opacity-90 transition-all transform hover:-translate-y-1 flex items-center"
+          >
+            Commencer <FaArrowRight className="ml-2" />
+          </button>
         </div>
+      </div>
 
-        {/* Features Section with improved cards */}
+      {/* Features Section with improved cards */}
       <div className="max-w-7xl mx-auto px-6 py-20">
         <h2 className="text-3xl font-bold text-gray-800 text-center mb-16">Tout ce qu'il vous faut pour un mariage parfait</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -47,7 +51,7 @@ const Homepage = () => {
             </div>
             <div className="px-8 pb-8">
               <button
-                onClick={() => navigate('/addceremony')}
+                onClick={() => setCeremonyModalOpen(true)}
                 className="flex items-center justify-center w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-6 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all font-medium"
               >
                 <FaPlus className="mr-2" /> Ajouter une Cérémonie
@@ -66,7 +70,7 @@ const Homepage = () => {
             </div>
             <div className="px-8 pb-8">
               <button
-                onClick={() => navigate('/addcouple')}
+                onClick={() => setCoupleModalOpen(true)}
                 className="flex items-center justify-center w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 px-6 rounded-lg hover:from-pink-600 hover:to-rose-600 transition-all font-medium"
               >
                 <FaPlus className="mr-2" /> Ajouter un Couple
@@ -94,6 +98,17 @@ const Homepage = () => {
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <CeremonyModal 
+        isOpen={ceremonyModalOpen} 
+        onClose={() => setCeremonyModalOpen(false)} 
+      />
+      
+      <CoupleModal 
+        isOpen={coupleModalOpen} 
+        onClose={() => setCoupleModalOpen(false)} 
+      />
 
       {/* Footer with improved design */}
       <Footer />

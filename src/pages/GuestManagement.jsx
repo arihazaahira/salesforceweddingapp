@@ -50,7 +50,9 @@ const GuestManagement = () => {
               <td>{guest.Name}</td>
               <td>{guest.Email__c}</td>
               <td>
-                <button className="btn-delete" onClick={() => handleDelete(guest.Id)}>Supprimer</button>
+                <button className="btn-delete" onClick={() => handleDelete(guest.Id)}>
+                  <i className="fas fa-trash"></i>
+                </button>
               </td>
             </tr>
           ))}
