@@ -1,0 +1,53 @@
+.wedding-details {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .wedding-details h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+  }
+  
+  .wedding-details p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    color: #34495e;
+  }
+  
+  .tabs {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .tabs button {
+    padding: 0.6rem 1.2rem;
+    background-color: #ecf0f1;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .tabs button:hover {
+    background-color: #d0dce5;
+  }
+  
+  .section-content {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-left: 4px solid #3498db;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #2c3e50;
+  }
+  
