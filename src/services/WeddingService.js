@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ACCESS_TOKEN = '00DgK0000029e5F!AQEAQIWs0qUMxkBeYKlOgR0GuB2lKXkn4pDjIebwTPQEfUt4pTCMramhf1mqYiedQQaZjtkqvJK.ltXMq27ErE_mDQO51UvZ';
+const ACCESS_TOKEN = "00DgK0000029e5F!AQEAQDSMvBsLMUtiJTRuPl8iJXZBSeGY8.QCiQB_ySbniPJfyx3KUXwGrB3vWERXbf.NkAcVfdm3wrDKoJoSddd5M1RNk7x3";
 const INSTANCE_URL = 'https://orgfarm-c407668048-dev-ed.develop.my.salesforce.com';
 
 export const getWeddingById = async (id) => {
