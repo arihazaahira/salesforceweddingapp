@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import CoupleModal from './CoupleModal';
+import CeremonyModal from './CeremonyModal';
 import { getWeddingById } from '../services/WeddingService'; // Tu dois créer cette fonction dans WeddingService.js
 import '../styles/WeddingDetails.css'; // Optionnel
 
@@ -70,7 +73,7 @@ const WeddingDetails = () => {
           onClose={() => setCoupleModalOpen(false)}
         />
       )}
-    </>
+    </div> 
   );
 };
 
