@@ -1,66 +1,34 @@
 import axios from 'axios';
 
+<<<<<<< HEAD
 const ACCESS_TOKEN = '00DgK0000029e5F!AQEAQHnNyxrx0JJ0PCPmaKeWIB.9iZVEUf2A.rqcpbvxFSWmK3ygZpvbMQpwXlc5OYLV0Mvrq3g01ka_pDf.Ug70okl_CCc9';;
+=======
+const ACCESS_TOKEN = "00DgK0000029e5F!AQEAQDSMvBsLMUtiJTRuPl8iJXZBSeGY8.QCiQB_ySbniPJfyx3KUXwGrB3vWERXbf.NkAcVfdm3wrDKoJoSddd5M1RNk7x3";
+>>>>>>> 9e58816a4f18388e64b6dfe288544f5da423529a
 const INSTANCE_URL = 'https://orgfarm-c407668048-dev-ed.develop.my.salesforce.com';
+const API_VERSION = 'v59.0'; // ou la version que tu utilises
+const BASE_URL = `${INSTANCE_URL}/services/data/${API_VERSION}/sobjects/Guest__c`;
 
-// ✅ Récupérer les invités liés à une cérémonie
-export const fetchGuestsByWeddingId = async (weddingId) => {
-  try {
-    const response = await axios.get(
-      `${INSTANCE_URL}/services/data/v56.0/query?q=SELECT+Id,Name,Email__c+FROM+Guest__c+WHERE+Wedding__c='${weddingId}'`,
-      {
-        headers: {
-          'Authorization': `Bearer ${ACCESS_TOKEN}`,
-          'Content-Type': 'application/json',
-        }
-      }
-    );
-    return response.data.records;
-  } catch (error) {
-    console.error('Erreur lors de la récupération des invités :', error.response?.data || error.message);
-    throw error;
-  }
+const headers = {
+  Authorization: `Bearer ${ACCESS_TOKEN}`,
+  'Content-Type': 'application/json',
 };
 
-// ✅ Ajouter un invité
-export const addGuest = async (weddingId, guestData) => {
-  try {
-    const dataToSend = {
-      ...guestData,
-      Wedding__c: weddingId
-    };
-
-    const response = await axios.post(
-      `${INSTANCE_URL}/services/data/v56.0/sobjects/Guest__c`,
-      dataToSend,
-      {
-        headers: {
-          'Authorization': `Bearer ${ACCESS_TOKEN}`,
-          'Content-Type': 'application/json',
-        }
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.error('Erreur lors de l’ajout d’un invité :', error.response?.data || error.message);
-    throw error;
-  }
+export const getGuestsByWeddingId = async (weddingId) => {
+  const query = `SELECT Id, Name, Email__c, Wedding__c FROM Guest__c WHERE Wedding__c='${weddingId}'`;
+  const url = `${INSTANCE_URL}/services/data/${API_VERSION}/query?q=${encodeURIComponent(query)}`;
+  
+  const response = await axios.get(url, { headers });
+  return response.data.records;
 };
 
-// ✅ Supprimer un invité
+export const addGuest = async (guest) => {
+  const response = await axios.post(BASE_URL, guest, { headers });
+  return response.data;
+};
+
 export const deleteGuest = async (guestId) => {
-  try {
-    const response = await axios.delete(
-      `${INSTANCE_URL}/services/data/v56.0/sobjects/Guest__c/${guestId}`,
-      {
-        headers: {
-          'Authorization': `Bearer ${ACCESS_TOKEN}`,
-        }
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.error('Erreur lors de la suppression d’un invité :', error.response?.data || error.message);
-    throw error;
-  }
+  const url = `${BASE_URL}/${guestId}`;
+  const response = await axios.delete(url, { headers });
+  return response.data;
 };

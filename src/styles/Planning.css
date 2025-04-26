@@ -1,0 +1,81 @@
+.planning-section {
+    padding: 20px;
+    background-color: #f9f4ff;
+    border-radius: 12px;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .planning-section h3 {
+    color: #6a1b9a;
+  }
+  
+  .planning-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .planning-form input,
+  .planning-form textarea,
+  .planning-form select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .planning-form button {
+    background-color: #6a1b9a;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .planning-form button:hover {
+    background-color: #8e24aa;
+  }
+  
+  .planning-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .planning-list li {
+    background-color: #ede3ff;
+    margin-bottom: 1rem;
+    padding: 1rem 1.2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(125, 88, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+  }
+  
+  .planning-list li strong {
+    color: #44217a;
+  }
+  
+  .planning-list li em {
+    color: #555;
+    font-style: italic;
+  }
+  
+  .delete-btn {
+    align-self: flex-end;
+    background-color: #f14e60;
+    color: white;
+    border: none;
+    padding: 8px 54px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .delete-btn:hover {
+    background-color: #cc2b42;
+  }
+  

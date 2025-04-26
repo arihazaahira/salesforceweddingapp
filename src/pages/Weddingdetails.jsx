@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import CoupleModal from './CoupleModal';
+import CeremonyModal from './CeremonyModal';
 import { getWeddingById } from '../services/WeddingService'; // Tu dois créer cette fonction dans WeddingService.js
 import '../styles/WeddingDetails.css'; // Optionnel
 
 const WeddingDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [wedding, setWedding] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [section, setSection] = useState('invites');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [ceremonyModalOpen, setCeremonyModalOpen] = useState(false);
+  const [coupleModalOpen, setCoupleModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchWedding = async () => {
@@ -16,6 +24,7 @@ const WeddingDetails = () => {
         setWedding(data);
       } catch (error) {
         console.error('Erreur lors du chargement:', error);
+        setError('Impossible de charger les détails de la cérémonie');
       } finally {
         setLoading(false);
       }
@@ -49,7 +58,22 @@ const WeddingDetails = () => {
         {section === 'taches' && <p>✅ Tâches (à venir)</p>}
         {section === 'feedback' && <p>💬 Feedback (à venir)</p>}
       </div>
-    </div>
+
+      {/* Modal components */}
+      {ceremonyModalOpen && (
+        <CeremonyModal 
+          isOpen={ceremonyModalOpen} 
+          onClose={() => setCeremonyModalOpen(false)}
+        />
+      )}
+      
+      {coupleModalOpen && (
+        <CoupleModal 
+          isOpen={coupleModalOpen} 
+          onClose={() => setCoupleModalOpen(false)}
+        />
+      )}
+    </div> 
   );
 };
 

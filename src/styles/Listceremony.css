@@ -1,359 +1,513 @@
-/* Base Styles */
+/* Styles de base et mode clair */
+:root {
+  --bg-primary: #f9f7f6;
+  --bg-secondary: #ffffff;
+  --text-primary: #555555;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+  --border-color: #e8e0df;
+  --primary-color: #d4a5a5;
+  --primary-hover: #c08e8e;
+  --table-header-bg: #f5eced;
+  --table-hover-bg: #f9f5f5;
+  --shadow-color: rgba(0, 0, 0, 0.08);
+  --chart-border: rgba(234, 226, 226, 1);
+  --accent-color: #a57878;
+  --font-family: 'Playfair Display', serif;
+}
+
+/* Variables pour le mode sombre */
+.dark-theme {
+  --bg-primary: #2d2828;
+  --bg-secondary: #3d3535;
+  --text-primary: #f0e6e6;
+  --text-secondary: #e0d5d5;
+  --text-muted: #c0b5b5;
+  --border-color: #544a4a;
+  --primary-color: #d4a5a5;
+  --primary-hover: #c08e8e;
+  --table-header-bg: #4a3e3e;
+  --table-hover-bg: #5c4d4d;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --chart-border: rgba(128, 100, 100, 1);
+  --accent-color: #e1c5c5;
+}
+
+/* Styles pour le conteneur principal */
 .list-ceremony-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+  padding: 20px;
+  background-color: var(--bg-primary);
+  min-height: 100vh;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  font-family: var(--font-family);
+  line-height: 1.6;
+}
+
+/* Header avec titre et bouton de thème */
+.header-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 30px;
+  padding: 20px 0;
 }
 
 .title {
+  color: var(--text-primary);
+  font-size: 32px;
+  font-weight: 700;
   text-align: center;
-  color: #2c3e50;
-  margin-bottom: 2rem;
-  font-size: 2.2rem;
-  font-weight: 600;
-  position: relative;
-  padding-bottom: 0.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  font-family: var(--font-family);
 }
 
-.title::after {
-  content: '';
+.theme-toggle-btn {
   position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 3px;
-  background: linear-gradient(to right, #3498db, #9b59b6);
-}
-
-/* Calendar Section */
-.calendar-section {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  padding: 1.5rem;
-  margin-bottom: 2.5rem;
-}
-
-.calendar-section h2 {
-  color: #34495e;
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
-  font-weight: 500;
-}
-
-.react-calendar {
-  width: 100%;
-  max-width: 500px;
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  padding: 1rem;
-  margin: 0 auto 1.5rem;
-}
-
-.react-calendar__navigation {
-  margin-bottom: 1rem;
-}
-
-.react-calendar__navigation button {
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
-  border: none;
-  color: #2c3e50;
-  font-weight: 600;
-  font-size: 1rem;
-  min-width: 44px;
-  padding: 0.5rem;
-}
-
-.react-calendar__month-view__weekdays {
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  color: #7f8c8d;
-  margin-bottom: 0.5rem;
-}
-
-.react-calendar__tile {
-  padding: 0.75em 0.5em;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-}
-
-.react-calendar__tile--now {
-  background: #e1f5fe;
-  color: #0288d1;
-  font-weight: 600;
-}
-
-.react-calendar__tile--active,
-.react-calendar__tile--active:enabled:hover,
-.react-calendar__tile--active:enabled:focus {
-  background: linear-gradient(to right, #3498db, #9b59b6);
-  color: white;
-}
-
-.has-ceremony {
-  position: relative;
-  background-color: #f8f4ff;
-}
-
-.ceremony-dot {
-  position: absolute;
-  bottom: 5px;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 6px;
-  width: 6px;
-  background-color: #9b59b6;
-  border-radius: 50%;
-}
-
-/* Ceremonies on Date */
-.ceremonies-on-date {
-  background: #f9f9f9;
-  border-radius: 8px;
-  padding: 1.25rem;
-  margin-top: 1.5rem;
-}
-
-.ceremonies-on-date h3 {
-  color: #2c3e50;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-  font-weight: 500;
-}
-
-.ceremonies-on-date ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.ceremonies-on-date li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #eee;
-  transition: background 0.2s;
-}
-
-.ceremonies-on-date li:last-child {
-  border-bottom: none;
-}
-
-.ceremonies-on-date li:hover {
-  background: #f0f0f0;
-}
-
-.ceremonies-on-date p {
-  color: #7f8c8d;
-  text-align: center;
-  margin: 1rem 0;
-}
-
-/* Table Styles */
-.ceremony-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin-top: 2rem;
-  background: white;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-.ceremony-table thead {
-  background: linear-gradient(to right, #3498db, #9b59b6);
-  color: white;
-}
-
-.ceremony-table th {
-  padding: 1rem;
-  text-align: left;
-  font-weight: 500;
-}
-
-.ceremony-table td {
-  padding: 1rem;
-  border-bottom: 1px solid #eee;
-}
-
-.ceremony-table tr:last-child td {
-  border-bottom: none;
-}
-
-.ceremony-table tbody tr:hover {
-  background-color: #f8f9fa;
-}
-
-/* Button Styles */
-.btn-details, .btn-details-small {
-  border: none;
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
+  padding: 8px 12px;
+  border-radius: 20px;
+  display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Barre de recherche */
+.search-container {
+  margin: 30px auto;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 50px;
+  padding: 10px 20px;
+  width: 100%;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  transition: all 0.3s ease;
+}
+
+.search-bar:focus-within {
+  box-shadow: 0 6px 12px var(--shadow-color);
+  border-color: var(--primary-color);
+}
+
+.search-icon {
+  color: var(--primary-color);
+  margin-right: 10px;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: var(--text-secondary);
+  background-color: transparent;
+  padding: 8px 0;
+  font-family: var(--font-family);
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.clear-search {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 8px;
+  transition: color 0.3s ease;
+}
+
+.clear-search:hover {
+  color: var(--primary-color);
+}
+
+/* Section du tableau des cérémonies */
+.all-ceremonies-section {
+  background-color: var(--bg-secondary);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px var(--shadow-color);
+  padding: 30px;
+  margin-bottom: 40px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.all-ceremonies-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px var(--shadow-color);
+}
+
+.all-ceremonies-section h2 {
+  color: var(--primary-color);
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 600;
+  font-family: var(--font-family);
+}
+
+.ceremonies-table-container {
+  overflow-x: auto;
+}
+
+.ceremonies-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-family);
+}
+
+.ceremonies-table th {
+  background-color: var(--table-header-bg);
+  color: var(--text-primary);
+  text-align: left;
+  padding: 15px 20px;
+  font-weight: 600;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.ceremonies-table td {
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.ceremonies-table tbody tr:hover {
+  background-color: var(--table-hover-bg);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: white;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .btn-details {
-  background: linear-gradient(to right, #3498db, #9b59b6);
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
   color: white;
-  min-width: 100px;
+  border: none;
+  border-radius: 50px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  font-family: var(--font-family);
 }
 
 .btn-details:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+  background: linear-gradient(135deg, var(--primary-hover), var(--accent-color));
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.btn-details-small {
-  background: #ecf0f1;
-  color: #2c3e50;
-  font-size: 0.85rem;
-  padding: 0.35rem 0.75rem;
-}
-
-.btn-details-small:hover {
-  background: #d6dbdf;
-}
-
-/* Loading and Error States */
-.loading, .error {
+.no-data {
   text-align: center;
-  padding: 2rem;
-  font-size: 1.2rem;
+  color: var(--text-muted);
+  padding: 30px 0;
+  font-style: italic;
 }
 
-.loading {
-  color: #3498db;
-}
-
-.error {
-  color: #e74c3c;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .list-ceremony-container {
-    padding: 1rem;
-  }
-  
-  .ceremony-table {
-    display: block;
-    overflow-x: auto;
-  }
-  
-  .react-calendar {
-    max-width: 100%;
-  }
-}
-/* Nouveaux styles pour le dashboard et le graphique */
+/* Section dashboard (graphique et calendrier) */
 .dashboard-row {
   display: flex;
-  gap: 2rem;
-  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 30px;
 }
 
+.stats-section,
 .calendar-section {
   flex: 1;
-  min-width: 400px;
+  min-width: 300px;
+  background-color: var(--bg-secondary);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px var(--shadow-color);
+  padding: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.stats-section {
-  flex: 1;
-  min-width: 400px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  padding: 1.5rem;
+.stats-section:hover,
+.calendar-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px var(--shadow-color);
+}
+
+.stats-section h2,
+.calendar-section h2 {
+  color: var(--primary-color);
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 600;
+  font-family: var(--font-family);
 }
 
 .chart-container {
   height: 300px;
-  margin: 1rem 0;
   position: relative;
 }
 
-.stats-summary {
-  margin-top: 2rem;
+.status-legend {
+  margin-top: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
 }
 
-.status-list {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0 0;
-}
-
-.status-list li {
+.status-item {
   display: flex;
   align-items: center;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #eee;
+  margin-bottom: 10px;
+  padding: 8px 15px;
+  background-color: var(--bg-primary);
+  border-radius: 20px;
+  transition: transform 0.2s ease;
+}
+
+.status-item:hover {
+  transform: translateY(-2px);
 }
 
 .status-color {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  margin-right: 0.75rem;
+  margin-right: 10px;
 }
 
 .status-name {
   flex: 1;
-  font-size: 0.9rem;
-}
-
-.status-count, .status-percent {
-  font-size: 0.85rem;
-  color: #666;
-  margin-left: 0.5rem;
-}
-
-.status-badge {
-  display: inline-block;
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
   font-weight: 500;
+}
+
+.status-count {
+  margin-right: 8px;
+  font-weight: 600;
+}
+
+.status-percent {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* Styles pour le calendrier */
+.react-calendar {
+  width: 100%;
+  border: none;
+  font-family: var(--font-family);
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.react-calendar button {
+  font-family: var(--font-family);
+}
+
+/* Styles spécifiques pour le calendrier en mode sombre */
+.dark-calendar {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-secondary) !important;
+}
+
+.dark-calendar .react-calendar__navigation button {
+  color: var(--text-primary);
+}
+
+.dark-calendar .react-calendar__tile {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+}
+
+.dark-calendar .react-calendar__month-view__days__day--weekend {
+  color: var(--primary-color);
+}
+
+.dark-calendar .react-calendar__tile--now {
+  background-color: var(--primary-color);
   color: white;
 }
 
-.status-planned { background-color: #4e73df; }
-.status-confirmed { background-color: #1cc88a; }
-.status-postponed { background-color: #f6c23e; }
-status-canceled { background-color: #e74a3b; }
-.status-completed { background-color: #36b9cc; }
-.status-unknown { background-color: #858796; }
+.react-calendar__tile--active {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color)) !important;
+  color: white !important;
+}
+
+.react-calendar__tile:enabled:hover {
+  background-color: var(--primary-hover) !important;
+  opacity: 0.7;
+}
+
+.has-ceremony {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.ceremony-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  margin: 0 auto;
+  margin-top: 2px;
+}
+
+.ceremonies-on-date {
+  margin-top: 25px;
+  background-color: var(--bg-primary);
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.ceremonies-on-date h3 {
+  font-size: 18px;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.date-ceremonies-list {
+  list-style: none;
+  padding: 0;
+}
+
+.date-ceremony-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease;
+}
+
+.date-ceremony-item:hover {
+  background-color: var(--table-hover-bg);
+}
 
 .ceremony-info {
-  flex: 1;
   display: flex;
-  gap: 1rem;
-  align-items: center;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.ceremony-info > span {
-  font-size: 0.9rem;
-  color: #666;
-}
-/* Supprimez les classes spécifiques aux statuts comme .status-planned etc. */
-.status-badge {
-  display: inline-block;
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
+.btn-details-small {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
   color: white;
-  margin-left: 0.5rem;
+  border: none;
+  border-radius: 50px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  font-family: var(--font-family);
 }
 
-/* Conservez le reste du CSS existant */
+.btn-details-small:hover {
+  background: linear-gradient(135deg, var(--primary-hover), var(--accent-color));
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.no-ceremonies {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 15px 0;
+  font-style: italic;
+}
+
+/* Loading et Error states */
+.loading, .error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 20px;
+  color: var(--primary-color);
+  background-color: var(--bg-primary);
+  font-family: var(--font-family);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .dashboard-row {
+    flex-direction: column;
+  }
+  
+  .stats-section,
+  .calendar-section {
+    width: 100%;
+  }
+  
+  .title {
+    font-size: 26px;
+  }
+  
+  .all-ceremonies-section,
+  .stats-section,
+  .calendar-section {
+    padding: 20px;
+  }
+  
+  .theme-toggle-btn {
+    position: relative;
+    margin-top: 15px;
+    transform: none;
+  }
+  
+  .header-container {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 22px;
+  }
+  
+  .ceremonies-table th,
+  .ceremonies-table td {
+    padding: 10px;
+  }
+  
+  .btn-details {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .search-bar {
+    padding: 8px 15px;
+  }
+}

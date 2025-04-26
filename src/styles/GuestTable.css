@@ -1,0 +1,95 @@
+.guest-table {
+    margin-top: 30px;
+    padding: 30px;
+    background: linear-gradient(135deg, #fdfcfe, #f3e8ff);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(134, 76, 255, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .guest-table h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #5a189a;
+    font-weight: 600;
+  }
+  
+  .guest-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+  
+  .guest-form input {
+    flex: 1;
+    min-width: 180px;
+    padding: 10px 14px;
+    border: 1px solid #d0bfff;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .guest-form input:focus {
+    border-color: #7b2cbf;
+    outline: none;
+  }
+  
+  .guest-form button {
+    background-color: #7b2cbf;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .guest-form button:hover {
+    background-color: #5a189a;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(123, 44, 191, 0.05);
+  }
+  
+  table th, table td {
+    padding: 14px 18px;
+    text-align: left;
+    border-bottom: 1px solid #f0e7ff;
+    font-size: 14px;
+  }
+  
+  table th {
+    background-color: #f3e8ff;
+    font-weight: 600;
+    color: #5a189a;
+  }
+  
+  table tr:hover {
+    background-color: #f8f0ff;
+  }
+  
+  table td button {
+    background-color: #d63384;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s ease;
+  }
+  
+  table td button:hover {
+    background-color: #ad1457;
+  }
+  

@@ -1,0 +1,57 @@
+.provider-section {
+    background-color: #f9f6ff;
+    padding: 20px;
+    border-radius: 15px;
+  }
+  
+  .provider-section h3 {
+    color: #5e2b97;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .form-group input,
+  .form-group select {
+    padding: 8px;
+    border: 1px solid #c8a6ff;
+    border-radius: 8px;
+    flex: 1;
+    min-width: 150px;
+  }
+  
+  .add-btn {
+    background-color: #5e2b97;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .add-btn:hover {
+    background-color: #7c47c5;
+  }
+  
+  .provider-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .provider-table th,
+  .provider-table td {
+    border: 1px solid #d8d8d8;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .provider-table th {
+    background-color: #eae2f8;
+    color: #5e2b97;
+  }
+  
