@@ -1,47 +1,66 @@
-/* Styles de base et mode clair */
+/* Styles de base et mode clair - Palette romantique améliorée */
 :root {
-  --bg-primary: #f9f7f6;
+  --bg-primary: #f8f3f7;
   --bg-secondary: #ffffff;
-  --text-primary: #555555;
-  --text-secondary: #666666;
-  --text-muted: #999999;
-  --border-color: #e8e0df;
-  --primary-color: #d4a5a5;
-  --primary-hover: #c08e8e;
-  --table-header-bg: #f5eced;
-  --table-hover-bg: #f9f5f5;
-  --shadow-color: rgba(0, 0, 0, 0.08);
-  --chart-border: rgba(234, 226, 226, 1);
-  --accent-color: #a57878;
+  --text-primary: #584557;
+  --text-secondary: #6e5c6a;
+  --text-muted: #9a8d99;
+  --border-color: #e8d8e4;
+  --primary-color: #c27ba0;
+  --primary-hover: #a55a84;
+  --accent-color: #b26e8f;
+  --secondary-accent: #d0a6c1;
+  --table-header-bg: #f3e6f0;
+  --table-hover-bg: #faf0f7;
+  --shadow-color: rgba(194, 123, 160, 0.12);
+  --chart-border: rgba(194, 123, 160, 0.3);
   --font-family: 'Playfair Display', serif;
+  
+  /* Nouvelles variables pour les effets */
+  --gradient-primary: linear-gradient(135deg, #c27ba0, #d0a6c1);
+  --gradient-hover: linear-gradient(135deg, #a55a84, #c27ba0);
+  --card-border-radius: 16px;
+  --transition-smooth: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+  --glow-effect: 0 0 25px rgba(194, 123, 160, 0.15);
 }
 
-/* Variables pour le mode sombre */
+/* Variables pour le mode sombre - Palette sophistiquée */
 .dark-theme {
-  --bg-primary: #2d2828;
-  --bg-secondary: #3d3535;
-  --text-primary: #f0e6e6;
-  --text-secondary: #e0d5d5;
-  --text-muted: #c0b5b5;
-  --border-color: #544a4a;
-  --primary-color: #d4a5a5;
-  --primary-hover: #c08e8e;
-  --table-header-bg: #4a3e3e;
-  --table-hover-bg: #5c4d4d;
-  --shadow-color: rgba(0, 0, 0, 0.3);
-  --chart-border: rgba(128, 100, 100, 1);
-  --accent-color: #e1c5c5;
+  --bg-primary: #1f1a24;
+  --bg-secondary: #2c2532;
+  --text-primary: #e6dfea;
+  --text-secondary: #d3c6db;
+  --text-muted: #a494ad;
+  --border-color: #483a53;
+  --primary-color: #b575a0;
+  --primary-hover: #9a5987;
+  --accent-color: #ce9db8;
+  --secondary-accent: #8d6e87;
+  --table-header-bg: #3a2e41;
+  --table-hover-bg: #453952;
+  --shadow-color: rgba(0, 0, 0, 0.25);
+  --chart-border: rgba(181, 117, 160, 0.5);
+  
+  /* Nouvelles variables pour les effets en mode sombre */
+  --gradient-primary: linear-gradient(135deg, #b575a0, #8d6e87);
+  --gradient-hover: linear-gradient(135deg, #9a5987, #b575a0);
+  --glow-effect: 0 0 30px rgba(181, 117, 160, 0.2);
 }
 
 /* Styles pour le conteneur principal */
 .list-ceremony-container {
-  padding: 20px;
-  background-color: var(--bg-primary);
+  padding: 30px;
+  background: var(--bg-primary);
+  background-image: radial-gradient(circle at 10% 20%, rgba(194, 123, 160, 0.05) 0%, transparent 80%);
   min-height: 100vh;
   color: var(--text-secondary);
-  transition: all 0.3s ease;
+  transition: var(--transition-smooth);
   font-family: var(--font-family);
   line-height: 1.6;
+}
+
+.dark-theme.list-ceremony-container {
+  background-image: radial-gradient(circle at 90% 10%, rgba(181, 117, 160, 0.08) 0%, transparent 80%);
 }
 
 /* Header avec titre et bouton de thème */
@@ -50,70 +69,105 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  margin-bottom: 30px;
-  padding: 20px 0;
+  margin-bottom: 50px;
+  padding: 30px 0;
+  border-bottom: 1px solid rgba(194, 123, 160, 0.15);
 }
 
 .title {
-  color: var(--text-primary);
-  font-size: 32px;
+  color: var(--primary-color);
+  font-size: 40px;
   font-weight: 700;
   text-align: center;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.08);
   font-family: var(--font-family);
+  margin: 0;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeIn 1.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .theme-toggle-btn {
   position: absolute;
-  right: 0;
+  right: 20px;
   top: 50%;
   transform: translateY(-50%);
-  background: none;
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
   cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 20px;
+  padding: 10px 14px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 12px rgba(194, 123, 160, 0.15);
 }
 
 .theme-toggle-btn:hover {
-  background-color: var(--primary-color);
+  background: var(--gradient-primary);
   color: white;
+  box-shadow: 0 6px 16px rgba(194, 123, 160, 0.3);
+  transform: translateY(-55%);
 }
 
-/* Barre de recherche */
+/* Barre de recherche améliorée */
 .search-container {
-  margin: 30px auto;
+  margin: 40px auto;
   display: flex;
   justify-content: center;
   width: 100%;
-  max-width: 600px;
+  max-width: 650px;
 }
 
 .search-bar {
   display: flex;
   align-items: center;
   background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 50px;
-  padding: 10px 20px;
+  border: 2px solid transparent;
+  border-radius: 60px;
+  padding: 12px 24px;
   width: 100%;
-  box-shadow: 0 4px 10px var(--shadow-color);
-  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px var(--shadow-color);
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.search-bar::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: var(--gradient-primary);
+  border-radius: 60px;
+  z-index: -1;
+  opacity: 0;
+  transition: var(--transition-smooth);
 }
 
 .search-bar:focus-within {
-  box-shadow: 0 6px 12px var(--shadow-color);
-  border-color: var(--primary-color);
+  box-shadow: 0 10px 30px var(--shadow-color);
+  transform: translateY(-3px);
+}
+
+.search-bar:focus-within::before {
+  opacity: 1;
 }
 
 .search-icon {
   color: var(--primary-color);
-  margin-right: 10px;
+  margin-right: 12px;
 }
 
 .search-input {
@@ -129,54 +183,103 @@
 
 .search-input::placeholder {
   color: var(--text-muted);
+  opacity: 0.7;
 }
 
 .clear-search {
   background: none;
   border: none;
   color: var(--text-muted);
-  font-size: 18px;
+  font-size: 20px;
   cursor: pointer;
   padding: 0 8px;
-  transition: color 0.3s ease;
+  transition: var(--transition-smooth);
 }
 
 .clear-search:hover {
   color: var(--primary-color);
+  transform: scale(1.1);
 }
 
 /* Section du tableau des cérémonies */
 .all-ceremonies-section {
   background-color: var(--bg-secondary);
-  border-radius: 10px;
-  box-shadow: 0 5px 15px var(--shadow-color);
-  padding: 30px;
-  margin-bottom: 40px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 8px 30px var(--shadow-color);
+  padding: 35px;
+  margin-bottom: 50px;
+  border: 1px solid rgba(194, 123, 160, 0.1);
+  transition: var(--transition-smooth);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.all-ceremonies-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: var(--gradient-primary);
+  z-index: 2;
 }
 
 .all-ceremonies-section:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px var(--shadow-color);
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px var(--shadow-color), var(--glow-effect);
 }
 
 .all-ceremonies-section h2 {
   color: var(--primary-color);
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 28px;
+  margin-bottom: 30px;
   text-align: center;
   font-weight: 600;
   font-family: var(--font-family);
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.all-ceremonies-section h2::after {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 3px;
+  background: var(--gradient-primary);
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50px;
 }
 
 .ceremonies-table-container {
   overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) var(--bg-primary);
+}
+
+.ceremonies-table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.ceremonies-table-container::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+  border-radius: 10px;
+}
+
+.ceremonies-table-container::-webkit-scrollbar-thumb {
+  background: var(--gradient-primary);
+  border-radius: 10px;
 }
 
 .ceremonies-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-family: var(--font-family);
 }
 
@@ -184,98 +287,167 @@
   background-color: var(--table-header-bg);
   color: var(--text-primary);
   text-align: left;
-  padding: 15px 20px;
+  padding: 18px 22px;
   font-weight: 600;
-  border-bottom: 2px solid var(--primary-color);
+  border-bottom: 3px solid var(--primary-color);
+  position: relative;
+}
+
+.ceremonies-table th:first-child {
+  border-top-left-radius: 10px;
+}
+
+.ceremonies-table th:last-child {
+  border-top-right-radius: 10px;
 }
 
 .ceremonies-table td {
-  padding: 15px 20px;
+  padding: 16px 22px;
   border-bottom: 1px solid var(--border-color);
+  transition: var(--transition-smooth);
+}
+
+.ceremonies-table tbody tr {
+  transition: var(--transition-smooth);
 }
 
 .ceremonies-table tbody tr:hover {
   background-color: var(--table-hover-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.ceremonies-table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 10px;
+}
+
+.ceremonies-table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 10px;
 }
 
 .status-badge {
   display: inline-block;
-  padding: 5px 12px;
-  border-radius: 20px;
+  padding: 6px 14px;
+  border-radius: 30px;
   font-size: 12px;
   color: white;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: var(--transition-smooth);
+}
+
+.status-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-details {
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  background: var(--gradient-primary);
   color: white;
   border: none;
   border-radius: 50px;
-  padding: 8px 16px;
+  padding: 9px 18px;
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
   font-size: 14px;
-  transition: all 0.3s ease;
+  transition: var(--transition-smooth);
   font-family: var(--font-family);
+  box-shadow: 0 4px 12px rgba(194, 123, 160, 0.3);
 }
 
 .btn-details:hover {
-  background: linear-gradient(135deg, var(--primary-hover), var(--accent-color));
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: var(--gradient-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(194, 123, 160, 0.4);
+}
+
+.btn-details:active {
+  transform: translateY(-1px);
 }
 
 .no-data {
   text-align: center;
   color: var(--text-muted);
-  padding: 30px 0;
+  padding: 40px 0;
   font-style: italic;
+  font-size: 16px;
 }
 
 /* Section dashboard (graphique et calendrier) */
 .dashboard-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
-  margin-top: 30px;
+  gap: 40px;
+  margin-top: 40px;
 }
 
 .stats-section,
 .calendar-section {
   flex: 1;
-  min-width: 300px;
+  min-width: 320px;
   background-color: var(--bg-secondary);
-  border-radius: 10px;
-  box-shadow: 0 5px 15px var(--shadow-color);
-  padding: 30px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 8px 30px var(--shadow-color);
+  padding: 35px;
+  border: 1px solid rgba(194, 123, 160, 0.1);
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-section::before,
+.calendar-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: var(--gradient-primary);
+  z-index: 2;
 }
 
 .stats-section:hover,
 .calendar-section:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px var(--shadow-color);
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px var(--shadow-color), var(--glow-effect);
 }
 
 .stats-section h2,
 .calendar-section h2 {
   color: var(--primary-color);
   font-size: 24px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   text-align: center;
   font-weight: 600;
   font-family: var(--font-family);
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.stats-section h2::after,
+.calendar-section h2::after {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 3px;
+  background: var(--gradient-primary);
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50px;
 }
 
 .chart-container {
   height: 300px;
   position: relative;
+  margin-bottom: 25px;
 }
 
 .status-legend {
@@ -290,14 +462,16 @@
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  padding: 8px 15px;
+  padding: 10px 16px;
   background-color: var(--bg-primary);
-  border-radius: 20px;
-  transition: transform 0.2s ease;
+  border-radius: 30px;
+  transition: var(--transition-smooth);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
 }
 
 .status-item:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
 }
 
 .status-color {
@@ -305,6 +479,7 @@
   height: 16px;
   border-radius: 50%;
   margin-right: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .status-name {
@@ -315,11 +490,13 @@
 .status-count {
   margin-right: 8px;
   font-weight: 600;
+  color: var(--primary-color);
 }
 
 .status-percent {
   color: var(--text-muted);
   font-size: 14px;
+  font-style: italic;
 }
 
 /* Styles pour le calendrier */
@@ -330,10 +507,39 @@
   background-color: var(--bg-secondary);
   color: var(--text-secondary);
   line-height: 1.6;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .react-calendar button {
   font-family: var(--font-family);
+  transition: var(--transition-smooth);
+}
+
+.react-calendar__navigation {
+  height: 50px;
+  background: var(--table-header-bg);
+}
+
+.react-calendar__navigation button {
+  color: var(--primary-color);
+  font-weight: 600;
+  min-width: 36px;
+  background: transparent;
+  font-size: 16px;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.react-calendar__tile {
+  padding: 12px 0;
+  position: relative;
+  transition: var(--transition-smooth);
 }
 
 /* Styles spécifiques pour le calendrier en mode sombre */
@@ -342,8 +548,12 @@
   color: var(--text-secondary) !important;
 }
 
+.dark-calendar .react-calendar__navigation {
+  background-color: var(--table-header-bg);
+}
+
 .dark-calendar .react-calendar__navigation button {
-  color: var(--text-primary);
+  color: var(--primary-color);
 }
 
 .dark-calendar .react-calendar__tile {
@@ -352,22 +562,28 @@
 }
 
 .dark-calendar .react-calendar__month-view__days__day--weekend {
-  color: var(--primary-color);
+  color: var(--accent-color);
 }
 
 .dark-calendar .react-calendar__tile--now {
-  background-color: var(--primary-color);
+  background: var(--gradient-primary);
   color: white;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(194, 123, 160, 0.3);
 }
 
 .react-calendar__tile--active {
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color)) !important;
+  background: var(--gradient-primary) !important;
   color: white !important;
+  border-radius: 8px !important;
+  box-shadow: 0 3px 10px rgba(194, 123, 160, 0.3) !important;
 }
 
 .react-calendar__tile:enabled:hover {
   background-color: var(--primary-hover) !important;
   opacity: 0.7;
+  border-radius: 8px;
+  transform: translateY(-2px);
 }
 
 .has-ceremony {
@@ -378,25 +594,49 @@
 .ceremony-dot {
   width: 8px;
   height: 8px;
-  background-color: var(--primary-color);
+  background: var(--gradient-primary);
   border-radius: 50%;
-  margin: 0 auto;
-  margin-top: 2px;
+  margin: 2px auto 0;
+  box-shadow: 0 0 5px rgba(194, 123, 160, 0.5);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 .ceremonies-on-date {
-  margin-top: 25px;
+  margin-top: 30px;
   background-color: var(--bg-primary);
-  border-radius: 10px;
-  padding: 15px;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
 }
 
 .ceremonies-on-date h3 {
   font-size: 18px;
   color: var(--primary-color);
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   text-align: center;
   font-weight: 600;
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ceremonies-on-date h3::after {
+  content: '';
+  position: absolute;
+  width: 50%;
+  height: 2px;
+  background: var(--gradient-primary);
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50px;
 }
 
 .date-ceremonies-list {
@@ -408,59 +648,95 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 15px;
+  padding: 14px 16px;
   border-bottom: 1px solid var(--border-color);
-  transition: background-color 0.2s ease;
+  transition: var(--transition-smooth);
+  border-radius: 8px;
+  margin-bottom: 8px;
 }
 
 .date-ceremony-item:hover {
   background-color: var(--table-hover-bg);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
 }
 
 .ceremony-info {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
 }
 
 .btn-details-small {
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  background: var(--gradient-primary);
   color: white;
   border: none;
   border-radius: 50px;
-  padding: 6px 12px;
+  padding: 6px 14px;
   cursor: pointer;
   font-size: 12px;
-  transition: all 0.3s ease;
+  transition: var(--transition-smooth);
   font-family: var(--font-family);
+  box-shadow: 0 3px 10px rgba(194, 123, 160, 0.2);
 }
 
 .btn-details-small:hover {
-  background: linear-gradient(135deg, var(--primary-hover), var(--accent-color));
+  background: var(--gradient-hover);
   transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 15px rgba(194, 123, 160, 0.3);
 }
 
 .no-ceremonies {
   color: var(--text-muted);
   text-align: center;
-  padding: 15px 0;
+  padding: 20px 0;
   font-style: italic;
+  position: relative;
 }
 
-/* Loading et Error states */
+.no-ceremonies::before,
+.no-ceremonies::after {
+  content: '✧';
+  position: relative;
+  color: var(--primary-color);
+  margin: 0 12px;
+  opacity: 0.6;
+}
+
+/* Loading et Error states améliorés */
 .loading, .error {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  font-size: 20px;
+  font-size: 22px;
   color: var(--primary-color);
   background-color: var(--bg-primary);
   font-family: var(--font-family);
+  flex-direction: column;
+  gap: 20px;
 }
 
-/* Responsive design */
+.loading::after {
+  content: '';
+  width: 60px;
+  height: 60px;
+  border: 4px solid transparent;
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error {
+  color: #e57373;
+}
+
+/* Responsive design amélioré */
 @media (max-width: 768px) {
   .dashboard-row {
     flex-direction: column;
@@ -472,34 +748,45 @@
   }
   
   .title {
-    font-size: 26px;
+    font-size: 30px;
   }
   
   .all-ceremonies-section,
   .stats-section,
   .calendar-section {
-    padding: 20px;
+    padding: 25px;
   }
   
   .theme-toggle-btn {
     position: relative;
-    margin-top: 15px;
+    margin-top: 20px;
     transform: none;
+    right: auto;
   }
   
   .header-container {
     flex-direction: column;
+    padding: 20px 0;
+  }
+
+  .search-container {
+    max-width: 90%;
   }
 }
 
 @media (max-width: 480px) {
+  .list-ceremony-container {
+    padding: 20px 15px;
+  }
+
   .title {
-    font-size: 22px;
+    font-size: 24px;
   }
   
   .ceremonies-table th,
   .ceremonies-table td {
-    padding: 10px;
+    padding: 12px 10px;
+    font-size: 14px;
   }
   
   .btn-details {
@@ -509,5 +796,16 @@
   
   .search-bar {
     padding: 8px 15px;
+  }
+
+  .stats-section h2,
+  .calendar-section h2,
+  .all-ceremonies-section h2 {
+    font-size: 20px;
+  }
+
+  .status-item {
+    padding: 8px 12px;
+    font-size: 13px;
   }
 }

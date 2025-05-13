@@ -4,7 +4,8 @@ import Homepage from './pages/Homepage';
 import AddCouple from './pages/Addcouple';
 import AddCeremony from './pages/Addceremony';
 import ListCeremony from './pages/Listceremony';
-import WeddingDetails from './pages/Weddingdetails'; // Assure-toi que le chemin est correct
+import WeddingDetails from './pages/Weddingdetails';
+import CoupleLogin from './pages/CoupleLogin'; // Assure-toi que le chemin est correct
 
 import './App.css';
 
@@ -17,6 +18,8 @@ function App() {
         <Route path="/addceremony" element={<AddCeremony />} />
         <Route path="/listceremony" element={<ListCeremony />} />
         <Route path="/ceremony/:id" element={<WeddingDetails />} />
+        <Route path="/couplelogin" element={<CoupleLogin />} />
+
 
       </Routes>
     </Router>
