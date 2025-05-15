@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import GuestTable from './GuestTable';
+import Planning from './Planning';
+import Providerlist from './Providerlist';
+import TaskChecklist from './TaskChecklist';
+import FeedbackPage from './FeedbackPage';
 import CoupleModal from './CoupleModal';
 import CeremonyModal from './CeremonyModal';
 import { getWeddingById } from '../services/WeddingService'; // Tu dois créer cette fonction dans WeddingService.js
@@ -52,11 +57,11 @@ const WeddingDetails = () => {
       </div>
 
       <div className="section-content">
-        {section === 'invites' && <p>📋 Section Invités (à développer)</p>}
-        {section === 'planning' && <p>🗓️ Planning (à venir)</p>}
-        {section === 'prestataires' && <p>📦 Prestataires (à venir)</p>}
-        {section === 'taches' && <p>✅ Tâches (à venir)</p>}
-        {section === 'feedback' && <p>💬 Feedback (à venir)</p>}
+      {section === 'invites' && <GuestTable weddingId={id} />}
+      {section === 'planning' && <Planning weddingId={id} />}
+        {section === 'prestataires' && <Providerlist weddingId={id} />}
+        {section === 'taches' && <TaskChecklist weddingId={id} />}
+        {section === 'feedback' && <FeedbackPage weddingId={id} />}
       </div>
 
       {/* Modal components */}

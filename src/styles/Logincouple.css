@@ -1,0 +1,155 @@
+/* Logincouple.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
+
+.login-form {
+  max-width: 400px;
+  margin: 5% auto;
+  padding: 2.5rem;
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 
+              0 5px 15px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInDown 0.8s;
+}
+
+.login-form::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 0, 150, 0.1) 0%,
+    rgba(0, 204, 255, 0.1) 100%
+  );
+  transform: rotate(30deg);
+  z-index: 0;
+}
+
+.login-form > * {
+  position: relative;
+  z-index: 1;
+}
+
+.login-form h2 {
+  text-align: center;
+  margin-bottom: 1.8rem;
+  color: #333;
+  font-weight: 600;
+  font-size: 1.8rem;
+  background: linear-gradient(45deg, #ff4d79, #ff6b6b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: pulse 2s infinite;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 1.5rem;
+  border: none;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border: 1px solid #eee;
+}
+
+.login-form input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 105, 140, 0.3);
+  border-color: #ff6b6b;
+  transform: translateY(-2px);
+}
+
+.login-form input::placeholder {
+  color: #aaa;
+}
+
+.login-form button {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(45deg, #ff4d79, #ff6b6b);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 105, 140, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.login-form button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 20px rgba(255, 105, 140, 0.6);
+  background: linear-gradient(45deg, #ff6b6b, #ff4d79);
+}
+
+.login-form button:active {
+  transform: translateY(1px);
+}
+
+.login-form p {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #ff4d79;
+  font-weight: 500;
+}
+
+/* Heart animation */
+.heart-emoji {
+  position: absolute;
+  font-size: 1.2rem;
+  opacity: 0;
+}
+
+/* Animation for error message */
+[style*="color: red"] {
+  animation: shakeX 0.5s;
+}
+
+/* Floating animation for form */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.login-form {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .login-form {
+    margin: 20% auto;
+    padding: 1.5rem;
+    width: 85%;
+  }
+  
+  .login-form h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Add some romantic emoji decorations */
+.login-form::after {
+  content: '💖';
+  position: absolute;
+  font-size: 1.5rem;
+  top: 10px;
+  right: 15px;
+  opacity: 0.3;
+  animation: heartBeat 1.5s infinite;
+}
