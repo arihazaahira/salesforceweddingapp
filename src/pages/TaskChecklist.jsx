@@ -2,19 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { getTasksByWeddingId, addTask, deleteTask } from '../services/TaskService';
 import '../styles/Tasks.css';
 
-const Tasks = ({ weddingId, providers }) => {
+const TaskChecklist = ({ weddingId, providers }) => {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState({
     Name: '',
     Status__c: 'Not yet',
     Due_date__c: '',
     Assigned_To__c: '',
-    Wedding__c: weddingId
+    Type__c: '',
+    Wedding__c: weddingId,
   });
+
+  const typeOptions = ['DJ', 'Florist', 'Photographe', 'Dresser', 'Makeup Artist', 'logistics Manager', 'Food Provider'];
+  const statusOptions = ['Not yet', 'Processing', 'Finished'];
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [weddingId]);
 
   const fetchTasks = async () => {
     try {
@@ -26,10 +30,28 @@ const Tasks = ({ weddingId, providers }) => {
     }
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewTask((prev) => ({ ...prev, [name]: value }));
+  };
+
   const handleAdd = async () => {
+    const { Name, Due_date__c, Type__c } = newTask;
+    if (!Name || !Due_date__c || !Type__c) {
+      alert('Veuillez remplir tous les champs obligatoires.');
+      return;
+    }
+
     try {
-      await addTask(newTask);
-      setNewTask({ Name: '', Status__c: 'Not yet', Due_date__c: '', Assigned_To__c: '', Wedding__c: weddingId });
+      await addTask({ ...newTask, Wedding__c: weddingId });
+      setNewTask({
+        Name: '',
+        Status__c: 'Not yet',
+        Due_date__c: '',
+        Assigned_To__c: '',
+        Type__c: '',
+        Wedding__c: weddingId
+      });
       fetchTasks();
     } catch (error) {
       console.error('Erreur ajout tâche :', error);
@@ -46,58 +68,74 @@ const Tasks = ({ weddingId, providers }) => {
     }
   };
 
+  const filteredProviders = providers?.filter((p) => p.Type__c === newTask.Type__c);
+
   return (
     <div className="task-section">
       <h3>Checklist des Tâches</h3>
 
-      <div className="task-form">
+      <div className="form-group">
         <input
           type="text"
+          name="Name"
           placeholder="Nom de la tâche"
           value={newTask.Name}
-          onChange={(e) => setNewTask({ ...newTask, Name: e.target.value })}
+          onChange={handleChange}
         />
+
         <input
           type="date"
+          name="Due_date__c"
           value={newTask.Due_date__c}
-          onChange={(e) => setNewTask({ ...newTask, Due_date__c: e.target.value })}
+          onChange={handleChange}
         />
-        <select
-          value={newTask.Status__c}
-          onChange={(e) => setNewTask({ ...newTask, Status__c: e.target.value })}
-        >
-          <option value="Not yet">Not yet</option>
-          <option value="Processing">Processing</option>
-          <option value="Finished">Finished</option>
-        </select>
-        <select
-          value={newTask.Assigned_To__c}
-          onChange={(e) => setNewTask({ ...newTask, Assigned_To__c: e.target.value })}
-        >
-          <option value="">-- Choisir un prestataire --</option>
-          {providers?.map((p) => (
-            <option key={p.Id} value={p.Id}>{p.Name}</option>
+
+        <select name="Type__c" value={newTask.Assigned_To__c} onChange={handleChange}>
+          <option value="">--Choisir un prestataire--</option>
+          {typeOptions.map((type) => (
+            <option key={type} value={type}>{type}</option>
           ))}
         </select>
-        <button onClick={handleAdd}>Ajouter</button>
+
+        <select name="Status__c" value={newTask.Status__c} onChange={handleChange}>
+          {statusOptions.map((status) => (
+            <option key={status} value={status}>{status}</option>
+          ))}
+        </select>
+
+        <button className="add-btn" onClick={handleAdd}>Ajouter</button>
       </div>
 
-      <ul className="task-list">
-        {tasks.length === 0 ? (
-          <li>Aucune tâche pour le moment.</li>
-        ) : (
-          tasks.map(task => (
-            <li key={task.Id}>
-              <strong>{task.Name}</strong> – {task.Due_date__c} <br />
-              Statut : {task.Status__c} <br />
-              Assignée à : {task.Assigned_To__r?.Name || 'Non défini'}
-              <button className="delete-btn" onClick={() => handleDelete(task.Id)}>Supprimer</button>
-            </li>
-          ))
-        )}
-      </ul>
+      {tasks.length === 0 ? (
+        <p>Aucune tâche pour le moment.</p>
+      ) : (
+        <table className="task-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Échéance</th>
+              <th>Assigned</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tasks.map((task) => (
+              <tr key={task.Id}>
+                <td>{task.Name}</td>
+                <td>{task.Due_date__c}</td>
+                <td>{task.Assigned_To__c}</td>
+                <td>{task.Status__c}</td>
+                <td>
+                  <button className="delete-btn" onClick={() => handleDelete(task.Id)}>Supprimer</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
 
-export default Tasks;
+export default TaskChecklist;

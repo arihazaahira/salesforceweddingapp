@@ -1,0 +1,43 @@
+.couple-form {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .couple-form h5 {
+    margin-bottom: 10px;
+    color: #444;
+  }
+  
+  .form-group {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .form-group.checkbox {
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .submit-btn {
+    background-color: #0077cc;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .submit-btn:hover {
+    background-color: #005fa3;
+  }
+  

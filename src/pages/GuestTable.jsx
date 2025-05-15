@@ -85,6 +85,9 @@ const GuestTable = ({ weddingId }) => {
               <th>Nom</th>
               <th>Email</th>
               <th>Action</th>
+              <th>Invitation envoyée</th>
+<th>Rappel envoyé</th>
+<th>Remerciement envoyé</th>
             </tr>
           </thead>
           <tbody>
