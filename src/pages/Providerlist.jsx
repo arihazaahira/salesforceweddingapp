@@ -229,16 +229,10 @@ const ProviderList = ({ weddingId }) => {
                               ) : '-'}
                             </td>
                             <td>
-                              <input
-                                type="radio"
-                                name={`approval-${type}`}
-                                checked={provider.Couple_Response__c === 'Accepted'}
-                                onChange={() => onCoupleApproval(provider.Id, provider.Type__c)}
-                              />
-                              <span style={{ marginLeft: '8px' }}>
-                                {provider.Couple_Response__c || 'Not Precised'}
-                              </span>
-                            </td>
+  <span>
+    {provider.Couple_Response__c || 'Not Precised'}
+  </span>
+</td>
                             <td>
                               <button onClick={() => handleDelete(provider.Id)}>Supprimer</button>
                             </td>

@@ -4,7 +4,7 @@ import axios from 'axios';
 const API_CONFIG = {
   instanceUrl: 'https://orgfarm-c407668048-dev-ed.develop.my.salesforce.com',
   apiVersion: 'v55.0',
-  accessToken: '00DgK0000029e5F!AQEAQPYVB5DiebQWqs_Dk1LU2fCVdnWPVYLfZy6M0QDexdZhP98g.g.3z8OGdKX30o0wHShQBQEr8Ysl4Z4Mq7lsjX854gRC'
+  accessToken: "00DgK0000029e5F!AQEAQMeSddtqm3RxaF_85l90E_ve0_1CnTdKtlbLS3inkEXJh3j_wUB7Lk9nLUi79qroLy1DRh4DIz56su6G4l_dl2KPvPe_",
 };
 
 // Création d'une instance Axios avec configuration par défaut

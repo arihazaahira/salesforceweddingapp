@@ -1,74 +1,152 @@
-import React, { useEffect, useState } from 'react';
-import { handleCoupleResponse } from '../services/ProviderService';
+import { useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import CoupleFormView from '../services/CoupleFormView.js';
 
-const typesWithForm = ['DJ', 'Dresser', 'Logistics provider', 'Makeup Artist', 'Food Provider', 'Flower Provider'];
+// Configuration Salesforce
+const SALESFORCE_CONFIG = {
+  accessToken: "00DgK0000029e5F!AQEAQMeSddtqm3RxaF_85l90E_ve0_1CnTdKtlbLS3inkEXJh3j_wUB7Lk9nLUi79qroLy1DRh4DIz56su6G4l_dl2KPvPe_",
+  instanceUrl: 'https://orgfarm-c407668048-dev-ed.develop.my.salesforce.com'
+};
 
-const CoupleForm = ({ providers }) => {
-  const [selectedProviders, setSelectedProviders] = useState({});
+// Types de prestataires
+const PROVIDER_TYPES = ['DJ', 'Dresser', 'Logistics provider', 'Makeup Artist', 'Food Provider', 'Flower Provider'];
 
-  const groupedProviders = typesWithForm.reduce((acc, type) => {
-    acc[type] = (providers || []).filter(p => p.Type__c === type && p.Status__c === 'Accepted');
-    return acc;
-  }, {});
+function CoupleForm() {
+  const location = useLocation();
+  const { coupleName } = location.state || {};
+  const [weddingId, setWeddingId] = useState(null);
+  const [providers, setProviders] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSelect = async (type, selectedId) => {
-    setSelectedProviders(prev => ({ ...prev, [type]: selectedId }));
+  useEffect(() => {
+    if (coupleName) {
+      fetchWeddingAndProviders();
+    }
+  }, [coupleName]);
 
-    for (const provider of groupedProviders[type]) {
-      const newValue = provider.Id === selectedId ? 'Accepted' : 'Refused';
-      if (provider.Couple_Response__c !== newValue) {
-        await handleCoupleResponse(provider.Id, newValue);
-      }
+  const fetchWeddingAndProviders = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      // 1. Trouver le couple par son nom
+      const coupleId = await fetchCoupleId(coupleName);
+      
+      // 2. Trouver le mariage associé à ce couple
+      const weddingId = await fetchWeddingId(coupleId);
+      setWeddingId(weddingId);
+
+      // 3. Récupérer les prestataires associés à ce mariage
+      const providersData = await fetchProviders(weddingId);
+      setProviders(providersData);
+      
+    } catch (err) {
+      setError(err.message);
+      console.error('Erreur:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (!providers || !Array.isArray(providers)) {
-    return <div>Chargement des prestataires...</div>;
-  }
+  const fetchCoupleId = async (coupleName) => {
+    const query = `SELECT Id FROM Couple__c WHERE Couple_Name__c = '${encodeURIComponent(coupleName)}'`;
+    const response = await executeQuery(query);
+    
+    if (!response.records?.length) {
+      throw new Error('Couple non trouvé');
+    }
+    
+    return response.records[0].Id;
+  };
+
+  const fetchWeddingId = async (coupleId) => {
+    const query = `SELECT Id FROM Wedding__c WHERE Couple_Name__c = '${coupleId}'`;
+    const response = await executeQuery(query);
+    
+    if (!response.records?.length) {
+      throw new Error('Aucun mariage trouvé pour ce couple');
+    }
+    
+    return response.records[0].Id;
+  };
+
+  const fetchProviders = async (weddingId) => {
+    const query = `SELECT Id, Name, Type__c, Price__c, Availability__c, 
+                   Status__c, Couple_Response__c, Phone__c, ServiceQuality__c, References__c
+                   FROM Provider__c WHERE Wedding__c = '${weddingId}'`;
+    const response = await executeQuery(query);
+    return response.records || [];
+  };
+
+  const executeQuery = async (soqlQuery) => {
+    const response = await fetch(
+      `${SALESFORCE_CONFIG.instanceUrl}/services/data/v56.0/query?q=${encodeURIComponent(soqlQuery)}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${SALESFORCE_CONFIG.accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    return await response.json();
+  };
+
+  const updateProviderResponse = async (providerId, response) => {
+    try {
+      // Mettre à jour le provider dans Salesforce
+      await updateProviderInSalesforce(providerId, { Couple_Response__c: response });
+      
+      // Si la réponse est "Accepted", refuser les autres providers du même type
+      if (response === 'Accepted') {
+        const provider = providers.find(p => p.Id === providerId);
+        const sameTypeProviders = providers.filter(p => 
+          p.Type__c === provider.Type__c && p.Id !== providerId
+        );
+        
+        for (const p of sameTypeProviders) {
+          await updateProviderInSalesforce(p.Id, { Couple_Response__c: 'Refused' });
+        }
+      }
+      
+      // Rafraîchir la liste
+      fetchProviders(weddingId).then(setProviders);
+      
+    } catch (err) {
+      setError(err.message);
+      console.error('Erreur lors de la mise à jour:', err);
+    }
+  };
+
+  const updateProviderInSalesforce = async (providerId, fields) => {
+    const response = await fetch(
+      `${SALESFORCE_CONFIG.instanceUrl}/services/data/v56.0/sobjects/Provider__c/${providerId}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${SALESFORCE_CONFIG.accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(fields)
+      }
+    );
+    
+    if (!response.ok) {
+      throw new Error('Échec de la mise à jour');
+    }
+  };
 
   return (
-    <div>
-      <h2>Choix du couple</h2>
-      {typesWithForm.map(type => (
-        <div key={type}>
-          <h3>{type}</h3>
-          <table border="1" cellPadding="8" style={{ width: '100%', marginBottom: '20px' }}>
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Téléphone</th>
-                <th>Prix</th>
-                <th>Disponibilité</th>
-                <th>Qualité</th>
-                <th>Références</th>
-                <th>Choix du couple</th>
-              </tr>
-            </thead>
-            <tbody>
-              {groupedProviders[type].map(provider => (
-                <tr key={provider.Id}>
-                  <td>{provider.Name}</td>
-                  <td>{provider.Phone__c}</td>
-                  <td>{provider.Price__c}</td>
-                  <td>{provider.Availability__c}</td>
-                  <td>{provider.ServiceQuality__c}</td>
-                  <td>{provider.References__c}</td>
-                  <td>
-                    <input
-                      type="radio"
-                      name={`provider-${type}`}
-                      checked={selectedProviders[type] === provider.Id}
-                      onChange={() => handleSelect(type, provider.Id)}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ))}
-    </div>
+    <CoupleFormView 
+      coupleName={coupleName}
+      providers={providers}
+      providerTypes={PROVIDER_TYPES}
+      loading={loading}
+      error={error}
+      onRetry={fetchWeddingAndProviders}
+      onResponseChange={updateProviderResponse}
+    />
   );
-};
+}
 
 export default CoupleForm;
