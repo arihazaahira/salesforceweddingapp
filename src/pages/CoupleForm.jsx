@@ -4,7 +4,7 @@ import CoupleFormView from '../services/CoupleFormView.js';
 
 // Configuration Salesforce
 const SALESFORCE_CONFIG = {
-  accessToken: '00DgK0000029e5F!AQEAQKDalq.vpvXfvev8pGGaHDMM3x7cKeMvRDMFaMYnENTEq2P4pTQnLOSqMEJng1JKECY9XHzaeJMJ8zZNCQrmKDFvcj0m',
+  accessToken: '00DgK0000029e5F!AQEAQNWe6I.I.lBywHFAPy83qWvEFVsUItgjiwFRj4eKX6vg4YqlECUQZQLvBmeVkHn75E0Avtc89KbIpFlrdaskwH8sg38.',
   instanceUrl: 'https://orgfarm-c407668048-dev-ed.develop.my.salesforce.com'
 };
 
