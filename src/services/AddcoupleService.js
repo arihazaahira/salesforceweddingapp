@@ -1,11 +1,10 @@
 export const saveCoupleData = async (data) => {
-  const accessToken = "00DgK0000029e5F!AQEAQMeSddtqm3RxaF_85l90E_ve0_1CnTdKtlbLS3inkEXJh3j_wUB7Lk9nLUi79qroLy1DRh4DIz56su6G4l_dl2KPvPe_"; 
+  const accessToken = process.env.REACT_APP_SF_ACCESS_TOKEN;
+  const instanceUrl = process.env.REACT_APP_SF_INSTANCE_URL;
 
-  const instanceUrl = 'https://orgfarm-c407668048-dev-ed.develop.my.salesforce.com';
+
 
   try {
-    console.log("🔄 Envoi des données à Salesforce:", data);
-
     const response = await fetch(`${instanceUrl}/services/data/v55.0/sobjects/Couple__c`, {
       method: 'POST',
       headers: {
@@ -29,4 +28,3 @@ export const saveCoupleData = async (data) => {
     throw error;
   }
 };
-

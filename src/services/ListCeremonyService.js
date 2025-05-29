@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'https://orgfarm-c407668048-dev-ed.develop.my.salesforce.com';
-const ACCESS_TOKEN ='00DgK0000029e5F!AQEAQKDalq.vpvXfvev8pGGaHDMM3x7cKeMvRDMFaMYnENTEq2P4pTQnLOSqMEJng1JKECY9XHzaeJMJ8zZNCQrmKDFvcj0m';
-
+const ACCESS_TOKEN=process.env.REACT_APP_SF_ACCESS_TOKEN;
+const API_URL=process.env.REACT_APP_SF_INSTANCE_URL;
 
 
 export const fetchAllCeremonies = async () => {
