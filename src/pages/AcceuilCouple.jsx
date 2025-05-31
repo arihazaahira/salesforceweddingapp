@@ -5,14 +5,6 @@ import { useNavigate } from 'react-router-dom';
 export default function WeddingHomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    weddingDate: '',
-    consultationDate: '',
-    message: ''
-  });
   
   const navigate = useNavigate();
   
@@ -25,24 +17,6 @@ export default function WeddingHomePage() {
   
   const handleConsultationRequest = () => {
     scrollToSection('consultation');
-  };
-  
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-  
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    alert(`Merci ${formData.fullName}, votre demande de consultation a été envoyée! Nous vous contacterons bientôt.`);
-    setFormData({
-      fullName: '',
-      email: '',
-      phone: '',
-      weddingDate: '',
-      consultationDate: '',
-      message: ''
-    });
   };
   
   const redirectToLogin = () => {
@@ -353,122 +327,24 @@ export default function WeddingHomePage() {
           <div className="bg-white rounded-xl shadow-lg p-8 md:p-10">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-800 mb-2">Demande de Consultation</h2>
-              <p className="text-gray-600">Remplissez ce formulaire pour planifier une consultation avec notre équipe</p>
+              <p className="text-gray-600">Planifiez une consultation avec notre équipe via notre système de réservation</p>
             </div>
             
-            <form onSubmit={handleFormSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="fullName" className="block text-gray-700 font-medium mb-2">
-                    Nom complet <span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    id="fullName"
-                    name="fullName"
-                    type="text"
-                    value={formData.fullName}
-                    onChange={handleFormChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
-                    Email <span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleFormChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="phone" className="block text-gray-700 font-medium mb-2">
-                    Téléphone <span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={handleFormChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="weddingDate" className="block text-gray-700 font-medium mb-2">
-                    Date prévue du mariage
-                  </label>
-                  <input
-                    id="weddingDate"
-                    name="weddingDate"
-                    type="date"
-                    value={formData.weddingDate}
-                    onChange={handleFormChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="consultationDate" className="block text-gray-700 font-medium mb-2">
-                    Date souhaitée pour la consultation <span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    id="consultationDate"
-                    name="consultationDate"
-                    type="date"
-                    value={formData.consultationDate}
-                    onChange={handleFormChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    required
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <label htmlFor="message" className="block text-gray-700 font-medium mb-2">
-                  Message ou questions supplémentaires
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows="4"
-                  value={formData.message}
-                  onChange={handleFormChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                ></textarea>
-              </div>
-              
-              <div className="flex items-center">
-                <input
-                  id="terms"
-                  name="terms"
-                  type="checkbox"
-                  className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
-                  required
-                />
-                <label htmlFor="terms" className="ml-2 block text-gray-700">
-                  J'accepte les termes et conditions
-                </label>
-              </div>
-              
-              <div className="text-center">
-                <button
-                  type="submit"
-                  className="px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                >
-                  Envoyer la demande
-                </button>
-              </div>
-            </form>
+            {/* Intégration de Woho Booking */}
+            <div className="w-full">
+              <iframe 
+                width='100%' 
+                height='750px' 
+                src='https://weddingapp.zohobookings.com/portal-embed#/weddingapp' 
+                frameBorder='0' 
+                allowFullScreen
+                className="border-0 rounded-lg"
+              ></iframe>
+            </div>
+            
+            <div className="mt-6 text-center text-gray-600">
+              <p>Si vous avez des questions spécifiques, n'hésitez pas à nous contacter directement.</p>
+            </div>
           </div>
         </div>
       </section>
