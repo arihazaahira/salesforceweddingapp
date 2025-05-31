@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-
-const ACCESS_TOKEN = "00DgK0000029e5F!AQEAQMeSddtqm3RxaF_85l90E_ve0_1CnTdKtlbLS3inkEXJh3j_wUB7Lk9nLUi79qroLy1DRh4DIz56su6G4l_dl2KPvPe_";
-
+const ACCESS_TOKEN = "00DgK0000029e5F!AQEAQD8Glm7qvNhnz2l7LT1k4fBQB6o4od.dJyYNLrrT.wZF78YKPX4gR9xRqSDc9PEZu8BUUW5uG9h9Qp3zrdZd4hqlBIiA";
 const INSTANCE_URL = 'https://orgfarm-c407668048-dev-ed.develop.my.salesforce.com';
 
 const headers = {
@@ -10,75 +8,101 @@ const headers = {
   'Content-Type': 'application/json'
 };
 
+// Helper function to handle errors
+const handleError = (error, context) => {
+  console.error(`Error in ${context}:`, {
+    status: error.response?.status,
+    message: error.response?.data || error.message,
+    config: error.config
+  });
+  throw error;
+};
 
 export const addProvider = async (providerData) => {
-  const response = await axios.post(
-    `${INSTANCE_URL}/services/data/v60.0/sobjects/Provider__c`,
-    providerData,
-    { headers }
-  );
-  return response.data;
+  try {
+    // Ensure required fields are present
+    const requiredFields = ['Name', 'Type__c', 'Wedding__c'];
+    const missingFields = requiredFields.filter(field => !providerData[field]);
+    
+    if (missingFields.length > 0) {
+      throw new Error(`Missing required fields: ${missingFields.join(', ')}`);
+    }
+
+    const response = await axios.post(
+      `${INSTANCE_URL}/services/data/v60.0/sobjects/Provider__c`,
+      providerData,
+      { headers }
+    );
+    return response.data;
+  } catch (error) {
+    handleError(error, 'addProvider');
+  }
 };
 
 export const deleteProvider = async (providerId) => {
-  const response = await axios.delete(
-    `${INSTANCE_URL}/services/data/v60.0/sobjects/Provider__c/${providerId}`,
-    { headers }
-  );
-  return response.status === 204;
+  try {
+    await axios.delete(
+      `${INSTANCE_URL}/services/data/v60.0/sobjects/Provider__c/${providerId}`,
+      { headers }
+    );
+    return true;
+  } catch (error) {
+    handleError(error, 'deleteProvider');
+  }
 };
 
-// Fonction utilitaire
-const updateCoupleResponse = async (providerId, responseValue) => {
-  const body = {
-    Couple_Response__c: responseValue
-  };
-
-  const responseUpdate = await axios.patch(
-    `${INSTANCE_URL}/services/data/v60.0/sobjects/Provider__c/${providerId}`,
-    body,
-    { headers }
-  );
-
-  return responseUpdate.data;
-};
-
-// Fonction exportée pour React
 export const handleCoupleResponse = async (providerId, responseValue) => {
   try {
-    return await updateCoupleResponse(providerId, responseValue);
+    const response = await axios.patch(
+      `${INSTANCE_URL}/services/data/v60.0/sobjects/Provider__c/${providerId}`,
+      { Couple_Response__c: responseValue },
+      { headers }
+    );
+    return response.data;
   } catch (error) {
-    console.error('Erreur lors de la mise à jour de la réponse du couple :', error);
-    throw error;
+    handleError(error, 'handleCoupleResponse');
   }
 };
 
 export const getProvidersByWeddingId = async (weddingId) => {
   try {
+    const query = `SELECT Id,Name,Type__c,Phone__c,Status__c,Couple_Response__c,Price__c,Availability__c,ServiceQuality__c,References__c,Wedding__c 
+                   FROM Provider__c 
+                   WHERE Wedding__c='${weddingId}'`;
+    
+    const encodedQuery = encodeURIComponent(query);
     const response = await axios.get(
-      `${INSTANCE_URL}/services/data/v60.0/query/?q=SELECT+Id,Name,Type__c,Phone__c,Status__c,Couple_Response__c,Price__c,Availability__c,ServiceQuality__c,References__c,Wedding__c+FROM+Provider__c+WHERE+Wedding__c='${weddingId}'`,
+      `${INSTANCE_URL}/services/data/v60.0/query/?q=${encodedQuery}`,
       { headers }
     );
     return response.data.records;
   } catch (error) {
-    console.error('Error fetching providers by wedding ID:', error.response?.data || error.message);
-    throw error;
+    handleError(error, 'getProvidersByWeddingId');
   }
 };
 
-export const getProvidersById = async (providerId) => {
+export const lockProvidersInSalesforce = async (weddingId) => {
   try {
-    const response = await axios.get(
-      `${INSTANCE_URL}/services/data/v60.0/sobjects/Provider__c/${providerId}`,
+    // 1. First lock the wedding
+    await axios.patch(
+      `${INSTANCE_URL}/services/data/v60.0/sobjects/Wedding__c/${weddingId}`,
+      { Providers_Locked__c: true },
       { headers }
     );
-    return response.data;
+
+    // 2. Then trigger the flow
+    const flowResponse = await axios.post(
+      `${INSTANCE_URL}/services/data/v60.0/actions/custom/flow/Couple_s_Choice_of_Providers`,
+      {
+        inputs: [{
+          weddingId: weddingId
+        }]
+      },
+      { headers }
+    );
+
+    return flowResponse.data;
   } catch (error) {
-    console.error('Error details:', {
-      url: `${INSTANCE_URL}/services/data/v60.0/sobjects/Provider__c/${providerId}`,
-      status: error.response?.status,
-      data: error.response?.data
-    });
-    throw new Error(`Failed to fetch provider: ${error.response?.data?.message || error.message}`);
+    handleError(error, 'lockProvidersInSalesforce');
   }
 };
