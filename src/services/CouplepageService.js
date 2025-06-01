@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const ACCESS_TOKEN=process.env.REACT_APP_SF_ACCESS_TOKEN;
-const INSTANCE_URL=process.env.REACT_APP_SF_INSTANCE_URL;
+const ACCESS_TOKEN="00DgK0000029e5F!AQEAQIc6j2fYobq7ThIDoFB_G4y3PcYu_qF7ABPksr6fG.dPqSanv8D_62IBvKlXzw2ntvCjrh1UAsQpLRAXY15c_hf74zek";
+const INSTANCE_URL='https://orgfarm-c407668048-dev-ed.develop.my.salesforce.com';
 
 const headers = {
   Authorization: `Bearer ${ACCESS_TOKEN}`,
