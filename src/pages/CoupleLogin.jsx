@@ -20,7 +20,7 @@ const CoupleLogin = () => {
 
     try {
       const query = `SELECT Id, Mot_de_passe__c FROM Login_Couple__c WHERE Name = '${loginName.trim()}' AND Mot_de_passe__c = '${password.trim()}'`;
-      
+
       const response = await axios.get(
         `${instanceUrl}/services/data/v59.0/query`,
         {
