@@ -460,3 +460,549 @@
   color: #6b7280;
   margin-top: 0.5rem;
 }
+/* Styles pour le calendrier */
+.calendar-section {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.calendar-month-title {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.nav-button:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.calendar-grid {
+  width: 100%;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.calendar-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.calendar-day-container {
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.calendar-day {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: none;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.calendar-day:hover:not(.disabled) {
+  background: #f0f0f0;
+}
+
+.calendar-day.selected {
+  background: #4f46e5;
+  color: white;
+}
+
+.calendar-day.disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.calendar-day.has-appointment:not(.selected)::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  width: 5px;
+  height: 5px;
+  background: #4f46e5;
+  border-radius: 50%;
+}
+
+.other-month .calendar-day {
+  color: #ccc;
+}
+
+/* Styles pour la timeline des rendez-vous */
+.appointments-title {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.appointments-timeline {
+  border-left: 2px solid #e5e7eb;
+  padding-left: 25px;
+  margin-left: 15px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 25px;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -31px;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #4f46e5;
+  border: 3px solid white;
+}
+
+.timeline-date {
+  position: absolute;
+  left: -80px;
+  top: -5px;
+  text-align: center;
+  width: 50px;
+}
+
+.timeline-day {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #4f46e5;
+}
+
+.timeline-month {
+  font-size: 0.8rem;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.timeline-content {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.timeline-header h4 {
+  margin: 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.timeline-status {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.timeline-details {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.timeline-time {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.timeline-location {
+  margin-bottom: 5px;
+}
+
+.timeline-notes {
+  background: #f9f9f9;
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
+.notes-label {
+  font-weight: 500;
+  color: #555;
+  font-size: 0.8rem;
+}
+
+.timeline-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.edit-button, .cancel-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.edit-button {
+  background: #e0e7ff;
+  color: #4f46e5;
+}
+
+.edit-button:hover {
+  background: #c7d2fe;
+}
+
+.cancel-button {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.cancel-button:hover {
+  background: #fecaca;
+}
+/* Styles pour le formulaire de rendez-vous */
+.appointment-form {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.3rem;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.form-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: #4f46e5;
+  border-radius: 3px;
+}
+
+.selected-date-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f5f3ff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  color: #4f46e5;
+  font-weight: 500;
+}
+
+.selected-date-info .icon {
+  color: #7c3aed;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group.full-width {
+  grid-column: span 2;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+}
+
+.form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper::after {
+  content: '⌄';
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #666;
+}
+
+.form-group select {
+  appearance: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.primary-button {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.primary-button:hover {
+  background: #4338ca;
+}
+
+.primary-button:disabled {
+  background: #c7d2fe;
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  background: white;
+  color: #4f46e5;
+  border: 1px solid #ddd;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.secondary-button:hover {
+  background: #f5f3ff;
+  border-color: #a78bfa;
+}
+
+/* Styles pour les erreurs de validation */
+.error-message {
+  color: #dc2626;
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+.form-group.error input,
+.form-group.error select,
+.form-group.error textarea {
+  border-color: #fca5a5;
+}
+
+.form-group.error input:focus,
+.form-group.error select:focus,
+.form-group.error textarea:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+/* Styles pour les boutons de RDV */
+.schedule-button-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.schedule-button {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.schedule-button:hover:not(:disabled) {
+  background: #4338ca;
+}
+
+.schedule-button.disabled-button {
+  background: #e5e7eb;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.view-appointment-button {
+  background: #e0e7ff;
+  color: #4f46e5;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.view-appointment-button:hover {
+  background: #c7d2fe;
+}
+/* Styles pour les jours où le prestataire est déjà réservé */
+.calendar-day.provider-booked {
+  position: relative;
+  color: #ccc;
+  background: #fef2f2;
+}
+
+.calendar-day.provider-booked:hover {
+  background: #fef2f2;
+}
+
+.provider-booked-icon {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  color: #dc2626;
+  font-size: 0.7rem;
+}
+/* Ajoutez ces styles supplémentaires */
+.appointment-card.editing {
+  border-left: 3px solid #4f46e5;
+  background-color: #f5f3ff;
+}
+
+.modal-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-button {
+  background: #e0e7ff;
+  color: #4f46e5;
+}
+
+.edit-button:hover {
+  background: #c7d2fe;
+}
+
+.cancel-button {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.cancel-button:hover {
+  background: #fecaca;
+}
+.appointment-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.view-appointment-button {
+  background: #e0e7ff;
+  color: #4f46e5;
+}
+
+.cancel-appointment-button {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.view-appointment-button,
+.cancel-appointment-button {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-appointment-button:hover {
+  background: #c7d2fe;
+}
+
+.cancel-appointment-button:hover {
+  background: #fecaca;
+}

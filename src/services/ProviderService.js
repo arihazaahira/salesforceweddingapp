@@ -245,6 +245,29 @@ export const lockProvidersInSalesforce = async (weddingId) => {
     handleError(error, 'lockProvidersInSalesforce');
   }
 };
+export const validateCoupleChoices = async (weddingId) => {
+  try {
+    // Utilisation directe de l'API Salesforce REST
+    const response = await fetch(`${INSTANCE_URL}/services/data/v58.0/sobjects/Wedding__c/${weddingId}`, {
+      method: 'PATCH',
+     
+      body: JSON.stringify({
+        'Choix_Valides__c': true
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Erreur Salesforce: ${response.status} - ${errorData[0]?.message || response.statusText}`);
+    }
+
+    console.log('Choix du couple validés avec succès dans Salesforce');
+    return { success: true, message: 'Choix validés' };
+  } catch (error) {
+    console.error('Erreur lors de la validation dans Salesforce:', error);
+    throw error;
+  }
+};
 
 // Additional utility function to check connection
 export const testConnection = async () => {

@@ -527,3 +527,250 @@
     transform: translateY(0);
   }
 }
+/* Styles pour le message d'attente */
+.waiting-contact-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.elegant-message {
+  max-width: 600px;
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.decoration-top, .decoration-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.floral-border {
+  height: 2px;
+  width: 80px;
+  background: linear-gradient(90deg, transparent, #f8c8dc, transparent);
+  margin: 0 15px;
+}
+
+.ring-icon, .heart-icon {
+  font-size: 24px;
+  color: #d4a5c1;
+}
+
+.message-content {
+  padding: 20px 0;
+}
+
+.icon-wrapper {
+  margin-bottom: 25px;
+}
+
+.clock-icon {
+  color: #d4a5c1;
+  stroke-width: 1.5;
+}
+
+.message-title {
+  font-size: 1.8rem;
+  color: #5a3d5c;
+  margin-bottom: 20px;
+  font-weight: 500;
+  font-family: 'Playfair Display', serif;
+}
+
+.message-text {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+}
+
+.contact-info {
+  background: #f9f3f7;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 30px;
+  display: inline-block;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  gap: 10px;
+}
+
+.info-icon {
+  font-size: 1.2rem;
+}
+
+.dotted-line {
+  height: 1px;
+  width: 100px;
+  border-top: 2px dotted #e0c8d8;
+  margin: 0 15px;
+}
+
+/* Effet de fond élégant */
+.elegant-message::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, #f8e1ee 0%, rgba(248, 225, 238, 0) 70%);
+  z-index: 0;
+}
+
+.elegant-message::after {
+  content: '';
+  position: absolute;
+  bottom: -50px;
+  left: -50px;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, #f0e6f3 0%, rgba(240, 230, 243, 0) 70%);
+  z-index: 0;
+}
+
+.message-title,
+.message-text,
+.contact-info {
+  position: relative;
+  z-index: 1;
+}
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.clock-icon {
+  animation: float 3s ease-in-out infinite;
+}
+
+.ring-icon, .heart-icon {
+  transition: transform 0.3s ease;
+}
+
+.ring-icon:hover, .heart-icon:hover {
+  transform: scale(1.2);
+}
+.show-providers-button {
+  background: transparent;
+  border: 1px solid #d4a5c1;
+  color: #5a3d5c;
+  padding: 8px 16px;
+  border-radius: 20px;
+  margin: 20px auto;
+  display: block;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.show-providers-button:hover {
+  background: #f9f3f7;
+}
+.timeline-finalisation-section {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 20px;
+}
+
+.timeline-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.timeline-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.timeline-subtitle {
+  color: #666;
+  font-size: 14px;
+}
+
+.timeline-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+}
+
+.timeline-progress-bar {
+  width: 200px;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.timeline-progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, #4caf50, #66bb6a);
+  transition: width 0.3s ease;
+}
+
+.timeline-events {
+  space-y: 12px;
+}
+
+.timeline-event {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  border-left: 4px solid #9c27b0;
+  transition: all 0.3s ease;
+}
+
+.timeline-event.completed {
+  border-left-color: #4caf50;
+  background: #f1f8e9;
+  opacity: 0.8;
+}
+
+.congratulations-message {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #4caf50, #66bb6a);
+  color: white;
+  border-radius: 12px;
+  margin: 20px 0;
+  font-weight: bold;
+}
+
+.finalize-button {
+  background: linear-gradient(135deg, #9c27b0, #e91e63);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.finalize-button:hover {
+  transform: scale(1.05);
+}
