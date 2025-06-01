@@ -15,7 +15,7 @@ const CoupleLogin = () => {
     setIsLoading(true);
     setError('');
 
-    // Redirection spéciale pour weddingplanner
+
     if (
       loginName.trim().toLowerCase() === 'weddingplanner@gmail.com' &&
       password.trim() === 'weddingplanner'
@@ -26,6 +26,7 @@ const CoupleLogin = () => {
 
     const accessToken = process.env.REACT_APP_SF_ACCESS_TOKEN;
     const instanceUrl = process.env.REACT_APP_SF_INSTANCE_URL;
+
 
     try {
       const query = `SELECT Id, Mot_de_passe__c FROM Login_Couple__c WHERE Name = '${loginName.trim()}' AND Mot_de_passe__c = '${password.trim()}'`;

@@ -1,320 +1,308 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { CheckCircle, Clock, AlertCircle, X } from 'lucide-react';
+import React, { useState } from 'react';
 import '../styles/CoupleForm.css';
+import { CheckCircle, Clock, Calendar, Users, AlertTriangle } from 'lucide-react';
 
-const ProviderValidationPage = ({ marriageId, token }) => {
-  const [providers, setProviders] = useState([]);
-  const [providerTypes, setProviderTypes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [coupleName, setCoupleName] = useState('');
-  const [validationStatus, setValidationStatus] = useState('pending');
-  const [expiryDate, setExpiryDate] = useState(null);
-  const [timeRemaining, setTimeRemaining] = useState('');
+const CoupleFormView = ({
+  coupleName,
+  providers,
+  providerTypes,
+  loading,
+  error,
+  onRetry,
+  onResponseChange
+}) => {
+  // État des étapes du processus
+  const [currentStep, setCurrentStep] = useState(1);
+  const [completedSteps, setCompletedSteps] = useState([]);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [stepToComplete, setStepToComplete] = useState(null);
 
-  useEffect(() => {
-    if (marriageId && token) {
-      checkValidationStatus();
-    } else {
-      setError('Paramètres de validation manquants');
-      setLoading(false);
-    }
-  }, [marriageId, token]);
+  // Définition des étapes
+  const steps = [
+    { id: 1, name: "Choix des prestataires", icon: <Users size={20} />, description: "Sélectionnez vos prestataires préférés" },
+    { id: 2, name: "Attente des réponses", icon: <Clock size={20} />, description: "En attente de confirmation des prestataires" },
+    { id: 3, name: "Planification RDV", icon: <Calendar size={20} />, description: "Organisez vos rendez-vous" },
+    { id: 4, name: "Finalisation", icon: <CheckCircle size={20} />, description: "Validez vos choix définitifs" }
+  ];
 
-  useEffect(() => {
-    if (expiryDate && validationStatus === 'pending') {
-      const timer = setInterval(() => {
-        updateTimeRemaining();
-      }, 1000);
-      return () => clearInterval(timer);
-    }
-  }, [expiryDate, validationStatus]);
-
-  const checkValidationStatus = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`/api/weddingPlanner/validateStatus`, {
-        params: { marriageId, token }
-      });
-
-      if (response.data.success) {
-        setValidationStatus(response.data.status.toLowerCase());
-        setExpiryDate(new Date(response.data.expiryDate));
-        setCoupleName(response.data.coupleName || '');
-
-        if (response.data.status.toLowerCase() === 'pending') {
-          loadProviders();
-        }
-      } else {
-        setError(response.data.message);
-        setValidationStatus('error');
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || err.message);
-      setValidationStatus('error');
-    } finally {
-      setLoading(false);
-    }
+  // Fonction pour demander la confirmation avant de compléter une étape
+  const requestStepCompletion = (stepId) => {
+    setStepToComplete(stepId);
+    setShowConfirmModal(true);
   };
 
-  const loadProviders = async () => {
-    try {
-      const response = await axios.get(`/api/weddingPlanner/providers`, {
-        params: { marriageId, token }
-      });
-
-      if (response.data.success) {
-        setProviders(response.data.providers);
-        const types = [...new Set(response.data.providers.map(p => p.Type__c))];
-        setProviderTypes(types);
-      } else {
-        setError(response.data.message);
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || err.message);
+  // Fonction pour compléter une étape après confirmation
+  const completeStep = (stepId) => {
+    if (!completedSteps.includes(stepId)) {
+      setCompletedSteps([...completedSteps, stepId]);
     }
-  };
-
-  const updateTimeRemaining = () => {
-    if (!expiryDate) return;
-    const now = new Date();
-    const diff = expiryDate - now;
-
-    if (diff <= 0) {
-      setTimeRemaining('00:00:00');
-      setValidationStatus('expired');
-      return;
+    
+    if (stepId < steps.length) {
+      setCurrentStep(stepId + 1);
     }
-
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    setTimeRemaining(
-      `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds
-        .toString()
-        .padStart(2, '0')}`
-    );
+    
+    setShowConfirmModal(false);
   };
 
-  const handleResponseChange = (providerId, value) => {
-    setProviders(
-      providers.map(provider =>
-        provider.Id === providerId
-          ? { ...provider, Couple_Response__c: value }
-          : provider
-      )
-    );
+  // Fonction pour annuler la validation d'étape
+  const cancelStepCompletion = () => {
+    setShowConfirmModal(false);
+    setStepToComplete(null);
   };
 
-  const handleSubmit = async () => {
-    try {
-      setLoading(true);
-      setShowConfirmModal(false);
-
-      const choices = providers.map(provider => ({
-        id: provider.Id,
-        response: provider.Couple_Response__c || 'Not Precised'
-      }));
-
-      const response = await axios.post(`/api/weddingPlanner/validateChoices`, {
-        marriageId,
-        token,
-        choices
-      });
-
-      if (response.data.success) {
-        setValidationStatus('validated');
-      } else {
-        setError(response.data.message);
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Fonction pour grouper les prestataires par type
   const getProvidersByType = (type) => {
     return providers.filter(provider => provider.Type__c === type);
   };
 
+  // Options pour la réponse du couple
   const responseOptions = ['Not Precised', 'Accepted', 'Refused'];
 
-  const openConfirmModal = () => {
-    setShowConfirmModal(true);
-  };
-
-  const closeConfirmModal = () => {
-    setShowConfirmModal(false);
-  };
-
-  const renderContent = () => {
-    if (loading) {
-      return <div className="loading">Chargement en cours...</div>;
-    }
-
-    if (error) {
-      return (
-        <div className="error-container">
-          <AlertCircle size={48} className="error-icon" />
-          <h2>Erreur</h2>
-          <p>{error}</p>
-        </div>
-      );
-    }
-
-    if (validationStatus === 'expired') {
-      return (
-        <div className="expired-container">
-          <Clock size={48} className="expired-icon" />
-          <h2>Le délai de validation a expiré</h2>
-          <p>Nous sommes désolés, mais le délai de 48 heures pour valider vos choix est écoulé.</p>
-          <p>Veuillez contacter votre wedding planner pour plus d'informations.</p>
-        </div>
-      );
-    }
-
-    if (validationStatus === 'validated') {
-      return (
-        <div className="validated-container">
-          <CheckCircle size={48} className="validated-icon" />
-          <h2>Validation confirmée</h2>
-          <p>Merci ! Vos choix de prestataires ont été validés avec succès.</p>
-          <p>Votre wedding planner a été informé de vos décisions.</p>
-        </div>
-      );
-    }
-
-    return (
-      <div className="providers-container">
-        <div className="countdown-container">
-          <h3>Temps restant pour valider vos choix :</h3>
-          <div className="countdown">{timeRemaining}</div>
-          <p className="expiry-info">Expire le {expiryDate?.toLocaleString() || ''}</p>
-        </div>
-
-        {providers.length > 0 ? (
-          <div className="providers-content">
-            {providerTypes.map(type => {
-              const typeProviders = getProvidersByType(type);
-
-              return typeProviders.length > 0 && (
-                <div key={type} className="provider-type-section">
-                  <h3 className="provider-type-title">{type}</h3>
-
-                  <table className="providers-table">
-                    <thead>
-                      <tr>
-                        <th>Nom</th>
-                        <th>Téléphone</th>
-                        <th>Prix</th>
-                        <th>Disponibilité</th>
-                        <th>Statut</th>
-                        <th>Qualité</th>
-                        <th>Références</th>
-                        <th>Votre réponse</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {typeProviders.map(provider => (
-                        <tr key={provider.Id}>
-                          <td>{provider.Name}</td>
-                          <td>{provider.Phone__c || 'N/A'}</td>
-                          <td>{provider.Price__c ? `${provider.Price__c} €` : 'N/A'}</td>
-                          <td>
-                            {provider.Availability__c
-                              ? new Date(provider.Availability__c).toLocaleDateString('fr-FR')
-                              : 'N/A'}
-                          </td>
-                          <td>{provider.Status__c || 'N/A'}</td>
-                          <td>{provider.ServiceQuality__c ? `${provider.ServiceQuality__c}/5` : 'N/A'}</td>
-                          <td>
-                            {provider.References__c ? (
-                              <a href={provider.References__c} target="_blank" rel="noopener noreferrer">
-                                Voir
-                              </a>
-                            ) : 'N/A'}
-                          </td>
-                          <td>
-                            <select
-                              value={provider.Couple_Response__c || 'Not Precised'}
-                              onChange={(e) => handleResponseChange(provider.Id, e.target.value)}
-                              className="response-select"
-                            >
-                              {responseOptions.map(option => (
-                                <option key={option} value={option}>
-                                  {option}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              );
-            })}
-
-            <div className="validation-actions">
-              <button className="validate-button" onClick={openConfirmModal}>
-                Valider mes choix
-              </button>
-              <p className="validation-note">
-                Attention : Une fois validés, vos choix ne pourront plus être modifiés.
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="no-providers">
-            <p>Aucun prestataire trouvé pour votre mariage.</p>
-          </div>
-        )}
-      </div>
-    );
+  // Fonction pour gérer la réponse modifiée avec validation d'étape
+  const handleResponseChange = (providerId, value) => {
+    onResponseChange(providerId, value);
   };
 
   return (
-    <div className="provider-validation-page">
-      <header className="validation-header">
-        <h1><span className="heart-emoji">❤️</span> Validation des prestataires <span className="heart-emoji">❤️</span></h1>
-        <h2>{coupleName ? `Bonjour, ${coupleName}` : 'Bonjour'}</h2>
-      </header>
+    <div className="coupleform-layout">
+      {/* Sidebar de progression */}
+      <div className="coupleform-sidebar">
+        <div className="sidebar-header">
+          <h3>Votre Progression</h3>
+        </div>
+        <div className="sidebar-steps">
+          {steps.map((step) => (
+            <div 
+              key={step.id} 
+              className={`sidebar-step ${completedSteps.includes(step.id) ? 'completed' : ''} ${currentStep === step.id ? 'active' : ''}`}
+            >
+              <div className="step-indicator">
+                {completedSteps.includes(step.id) ? (
+                  <CheckCircle size={24} className="step-icon completed" />
+                ) : (
+                  <div className="step-number">{step.id}</div>
+                )}
+              </div>
+              <div className="step-content">
+                <div className="step-title">{step.name}</div>
+                <div className="step-icon">{step.icon}</div>
+                <div className="step-description">{step.description}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="sidebar-progress">
+          <div 
+            className="progress-bar" 
+            style={{ width: `${(completedSteps.length / steps.length) * 100}%` }}
+          ></div>
+        </div>
+      </div>
 
-      <main className="validation-content">{renderContent()}</main>
-
-      {showConfirmModal && (
-        <div className="confirmation-modal">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h3>Confirmation de validation</h3>
-              <button className="close-button" onClick={closeConfirmModal}>
-                <X size={24} />
+      {/* Contenu principal */}
+      <div className="coupleform-container">
+        <div className="coupleform-content animate__animated animate__fadeIn">
+          <h2 className="coupleform-title">
+            <span className="heart-emoji">❤️</span> Bonjour, {coupleName || 'Cher couple'} ! <span className="heart-emoji">❤️</span>
+          </h2>
+          <p className="coupleform-subtitle">Vos prestataires de service</p>
+          
+          <div className="providers-section">
+            {loading ? (
+              <div className="loading-message">Chargement en cours...</div>
+            ) : error ? (
+              <div className="error-message">
+                <p>Erreur: {error}</p>
+                <button onClick={onRetry} className="retry-button">
+                  Réessayer
+                </button>
+              </div>
+            ) : providers.length > 0 ? (
+              <div className="providers-by-type">
+                {providerTypes.map(type => {
+                  const typeProviders = getProvidersByType(type);
+                  
+                  return typeProviders.length > 0 && (
+                    <div key={type} className="provider-type-card">
+                      <h3 className="provider-type-title">{type}</h3>
+                      
+                      <table className="providers-table">
+                        <thead>
+                          <tr>
+                            <th>Nom</th>
+                            <th>Téléphone</th>
+                            <th>Prix</th>
+                            <th>Disponibilité</th>
+                            <th>Statut</th>
+                            <th>Qualité</th>
+                            <th>Références</th>
+                            <th>Réponse</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {typeProviders.map(provider => (
+                            <tr key={provider.Id}>
+                              <td>{provider.Name}</td>
+                              <td>{provider.Phone__c || 'N/A'}</td>
+                              <td>{provider.Price__c ? `${provider.Price__c} €` : 'N/A'}</td>
+                              <td>
+                                {provider.Availability__c 
+                                  ? new Date(provider.Availability__c).toLocaleDateString('fr-FR') 
+                                  : 'N/A'}
+                              </td>
+                              <td>{provider.Status__c || 'N/A'}</td>
+                              <td>
+                                {provider.ServiceQuality__c 
+                                  ? `${provider.ServiceQuality__c}/5` 
+                                  : 'N/A'}
+                              </td>
+                              <td>
+                                {provider.References__c ? (
+                                  <a href={provider.References__c} target="_blank" rel="noopener noreferrer">
+                                    Voir
+                                  </a>
+                                ) : 'N/A'}
+                              </td>
+                              <td>
+                                <select
+                                  value={provider.Couple_Response__c || 'Not Precised'}
+                                  onChange={(e) => handleResponseChange(provider.Id, e.target.value)}
+                                  className="response-select"
+                                  disabled={completedSteps.includes(1)}
+                                >
+                                  {responseOptions.map(option => (
+                                    <option key={option} value={option}>
+                                      {option}
+                                    </option>
+                                  ))}
+                                </select>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="no-providers">
+                <p>Aucun prestataire trouvé pour votre mariage.</p>
+                <button onClick={onRetry} className="retry-button">
+                  Actualiser
+                </button>
+              </div>
+            )}
+          </div>
+          
+          {currentStep === 1 && providers.length > 0 && !completedSteps.includes(1) && (
+            <div className="step-actions">
+              <button 
+                className="next-step-button"
+                onClick={() => requestStepCompletion(1)}
+              >
+                Valider mes choix
               </button>
             </div>
-            <div className="modal-body">
-              <p>
-                <strong>Attention :</strong> Vous êtes sur le point de valider définitivement vos choix de prestataires.
-              </p>
-              <p>Une fois cette action effectuée, vous ne pourrez plus modifier vos choix.</p>
-              <p>Êtes-vous sûr(e) de vouloir continuer ?</p>
+          )}
+          
+          {/* Instructions pour l'étape courante */}
+          {currentStep === 2 && !completedSteps.includes(2) && (
+            <div className="step-instructions">
+              <h3>Étape en cours : Attente des réponses</h3>
+              <p>Nous avons contacté les prestataires sélectionnés et attendons leurs réponses. Vous serez notifié(e)s dès qu'un prestataire aura répondu.</p>
+              
+              {/* Simuler que certains prestataires ont déjà répondu */}
+              <div className="interim-status">
+                <h4>Statut des réponses :</h4>
+                <ul className="response-status-list">
+                  <li><span className="status-dot received"></span> Reçues : 2</li>
+                  <li><span className="status-dot pending"></span> En attente : 3</li>
+                </ul>
+                
+                <button 
+                  className="next-step-button"
+                  onClick={() => requestStepCompletion(2)}
+                >
+                  Passer à l'étape suivante
+                </button>
+              </div>
             </div>
-            <div className="modal-footer">
-              <button className="cancel-button" onClick={closeConfirmModal}>
-                Annuler
-              </button>
-              <button className="confirm-button" onClick={handleSubmit}>
-                Confirmer et valider
+          )}
+          
+          {currentStep === 3 && !completedSteps.includes(3) && (
+            <div className="step-instructions">
+              <h3>Étape en cours : Planification des rendez-vous</h3>
+              <p>Planifiez vos rendez-vous avec les prestataires qui ont accepté votre demande.</p>
+              
+              <div className="meetings-calendar">
+                <h4>Calendrier des rendez-vous :</h4>
+                <div className="calendar-placeholder">
+                  {/* Ici viendrait un composant calendrier pour planifier les RDV */}
+                  <p className="calendar-info">Le calendrier de planification n'est pas encore implémenté.</p>
+                </div>
+                
+                <button 
+                  className="next-step-button"
+                  onClick={() => requestStepCompletion(3)}
+                >
+                  Confirmer les rendez-vous
+                </button>
+              </div>
+            </div>
+          )}
+          
+          {currentStep === 4 && !completedSteps.includes(4) && (
+            <div className="step-instructions">
+              <h3>Étape finale : Finalisation</h3>
+              <p>Félicitations ! Vous avez presque terminé. Confirmer vos choix finaux de prestataires.</p>
+              
+              <button 
+                className="next-step-button"
+                onClick={() => requestStepCompletion(4)}
+              >
+                Finaliser mon événement
               </button>
             </div>
+          )}
+          
+          {/* Fenêtre modale de confirmation */}
+          {showConfirmModal && (
+            <div className="confirmation-modal">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <AlertTriangle size={24} className="warning-icon" />
+                  <h3>Confirmation requise</h3>
+                </div>
+                <div className="modal-body">
+                  <p>
+                    <strong>Attention :</strong> Vous êtes sur le point de valider l'étape "{steps.find(s => s.id === stepToComplete)?.name}".
+                  </p>
+                  <p>Une fois cette étape validée, vous ne pourrez plus revenir en arrière ni modifier vos choix précédents.</p>
+                  <p>Êtes-vous sûr(e) de vouloir continuer ?</p>
+                </div>
+                <div className="modal-footer">
+                  <button className="cancel-button" onClick={cancelStepCompletion}>
+                    Annuler
+                  </button>
+                  <button className="confirm-button" onClick={() => completeStep(stepToComplete)}>
+                    Confirmer et continuer
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          <div className="floating-emojis">
+            <span className="floating-emoji">💍</span>
+            <span className="floating-emoji">👰</span>
+            <span className="floating-emoji">🤵</span>
+            <span className="floating-emoji">🎉</span>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
-export default ProviderValidationPage;
+export default CoupleFormView;

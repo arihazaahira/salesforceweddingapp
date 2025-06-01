@@ -4,7 +4,8 @@ import {
   getProvidersByWeddingId,
   deleteProvider,
   handleCoupleResponse,
-  lockProvidersInSalesforce
+  lockProvidersInSalesforce,
+  getWeddingById
 } from '../services/ProviderService';
 import { Check, Clock, Calendar, Sparkles } from 'lucide-react';
 import '../styles/ProviderList.css';
@@ -34,6 +35,7 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
 
   useEffect(() => {
     fetchProviders();
+    fetchWeddingLockStatus();
   }, [weddingId]);
 
   const fetchProviders = async () => {
@@ -46,11 +48,30 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
   };
 
   const handleChange = (e) => {
+    // Empêcher toute modification si la liste est verrouillée
+    if (providersLocked) {
+      return;
+    }
+    
     const { name, value } = e.target;
     setNewProvider((prev) => ({ ...prev, [name]: value }));
   };
+  
+  const fetchWeddingLockStatus = async () => {
+    try {
+      const wedding = await getWeddingById(weddingId);
+      setProvidersLocked(wedding.Providers_Locked__c);
+    } catch (error) {
+      console.error("Erreur lors de la récupération de l'état de verrouillage :", error);
+    }
+  };
 
   const handleAdd = async () => {
+    if (providersLocked) {
+      alert("La liste des prestataires est verrouillée. Ajout impossible.");
+      return;
+    }
+    
     const requiredFields = ['Name', 'Type__c', 'Status__c', 'Couple_Response__c'];
     const missingFields = requiredFields.filter((field) => !newProvider[field]);
 
@@ -124,13 +145,15 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
     if (!confirmLock) return;
   
     setIsLocking(true);
-    setLockingError(null); // <-- Utilisation correcte maintenant
+    setLockingError(null);
   
     try {
       const result = await lockProvidersInSalesforce(weddingId);
       
       if (result && result[0]?.success) {
+        // Mettre à jour l'état de verrouillage IMMÉDIATEMENT
         setProvidersLocked(true);
+        
         alert(
           '✅ Liste des prestataires finalisée avec succès !\n\n' +
           '📧 Un email a été envoyé au couple avec la liste des prestataires.\n' +
@@ -138,12 +161,25 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
           '🔒 Vous ne pouvez plus modifier la liste des prestataires.'
         );
         setActiveStep(1);
+        
+        // Réinitialiser le formulaire pour éviter tout problème
+        setNewProvider({
+          Name: '',
+          Type__c: '',
+          Phone__c: '',
+          Status__c: '',
+          Couple_Response__c: '',
+          Price__c: '',
+          Availability__c: '',
+          ServiceQuality__c: '',
+          References__c: ''
+        });
       } else {
         throw new Error(result?.[0]?.message || 'Erreur inconnue lors du verrouillage');
       }
     } catch (error) {
       console.error('Erreur complète:', error);
-      setLockingError(error.message); // <-- Utilisation correcte maintenant
+      setLockingError(error.message);
       alert(
         '❌ Erreur lors de la finalisation\n\n' +
         `${error.message}\n\n` +
@@ -153,7 +189,13 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
       setIsLocking(false);
     }
   };
+
   const handleDelete = async (id) => {
+    if (providersLocked) {
+      alert("La liste des prestataires est verrouillée. Suppression impossible.");
+      return;
+    }
+    
     try {
       await deleteProvider(id);
       fetchProviders();
@@ -249,8 +291,9 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                   <button 
                     onClick={handleLockProviders}
                     className="lock-providers-button"
+                    disabled={isLocking}
                   >
-                    Finaliser la liste des prestataires
+                    {isLocking ? 'Finalisation en cours...' : 'Finaliser la liste des prestataires'}
                   </button>
                 </div>
                 <div className="provider-form-grid">
@@ -262,6 +305,7 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                       placeholder="Nom du prestataire"
                       value={newProvider.Name}
                       onChange={handleChange}
+                      disabled={providersLocked || isLocking}
                     />
                   </div>
 
@@ -271,6 +315,7 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                       name="Type__c" 
                       value={newProvider.Type__c} 
                       onChange={handleChange}
+                      disabled={providersLocked || isLocking}
                     >
                       <option value="">Type de service</option>
                       {typeOptions.map((type) => (
@@ -287,6 +332,7 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                       placeholder="Téléphone"
                       value={newProvider.Phone__c}
                       onChange={handleChange}
+                      disabled={providersLocked || isLocking}
                     />
                   </div>
 
@@ -296,6 +342,7 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                       name="Status__c" 
                       value={newProvider.Status__c} 
                       onChange={handleChange}
+                      disabled={providersLocked || isLocking}
                     >
                       <option value="">Statut</option>
                       {statusOptions.map((status) => (
@@ -312,6 +359,7 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                       placeholder="Prix estimé"
                       value={newProvider.Price__c}
                       onChange={handleChange}
+                      disabled={providersLocked || isLocking}
                     />
                   </div>
 
@@ -322,6 +370,7 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                       name="Availability__c"
                       value={newProvider.Availability__c}
                       onChange={handleChange}
+                      disabled={providersLocked || isLocking}
                     />
                   </div>
 
@@ -336,6 +385,7 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                             value={star}
                             checked={newProvider.ServiceQuality__c === star.toString()}
                             onChange={handleChange}
+                            disabled={providersLocked || isLocking}
                           />
                           {star}
                         </label>
@@ -351,6 +401,7 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                       placeholder="Références (URL)"
                       value={newProvider.References__c}
                       onChange={handleChange}
+                      disabled={providersLocked || isLocking}
                     />
                   </div>
 
@@ -360,6 +411,7 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                       name="Couple_Response__c" 
                       value={newProvider.Couple_Response__c} 
                       onChange={handleChange}
+                      disabled={providersLocked || isLocking}
                     >
                       <option value="">Réponse du couple</option>
                       {coupleResponseOptions.map((response) => (
@@ -373,15 +425,16 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                   <button 
                     className="add-provider-button"
                     onClick={handleAdd}
+                    disabled={providersLocked || isLocking}
                   >
-                    Ajouter le prestataire
+                    {providersLocked ? 'Liste verrouillée' : 'Ajouter le prestataire'}
                   </button>
                 </div>
               </div>
             ) : (
               <div className="locked-notification">
                 <div className="locked-notification-content">
-                  <span>La liste des prestataires a été finalisée. Vous ne pouvez plus ajouter de prestataires.</span>
+                  <span>🔒 La liste des prestataires a été finalisée. Vous ne pouvez plus ajouter de prestataires.</span>
                 </div>
               </div>
             )}
@@ -443,8 +496,9 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                                         onClick={() => handleDelete(provider.Id)}
                                         className="delete-button"
                                         disabled={providersLocked}
+                                        title={providersLocked ? "Liste verrouillée - suppression impossible" : "Supprimer ce prestataire"}
                                       >
-                                        Supprimer
+                                        {providersLocked ? 'Verrouillé' : 'Supprimer'}
                                       </button>
                                     </td>
                                   </tr>
