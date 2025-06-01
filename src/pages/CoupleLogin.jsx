@@ -15,12 +15,21 @@ const CoupleLogin = () => {
     setIsLoading(true);
     setError('');
 
-    const accessToken = "00DgK0000029e5F!AQEAQD8Glm7qvNhnz2l7LT1k4fBQB6o4od.dJyYNLrrT.wZF78YKPX4gR9xRqSDc9PEZu8BUUW5uG9h9Qp3zrdZd4hqlBIiA";
-    const instanceUrl = 'https://orgfarm-c407668048-dev-ed.develop.my.salesforce.com';
+    // Redirection spéciale pour weddingplanner
+    if (
+      loginName.trim().toLowerCase() === 'weddingplanner@gmail.com' &&
+      password.trim() === 'weddingplanner'
+    ) {
+      window.location.href = 'http://localhost:3000/';
+      return;
+    }
+
+    const accessToken = process.env.REACT_APP_SF_ACCESS_TOKEN;
+    const instanceUrl = process.env.REACT_APP_SF_INSTANCE_URL;
 
     try {
       const query = `SELECT Id, Mot_de_passe__c FROM Login_Couple__c WHERE Name = '${loginName.trim()}' AND Mot_de_passe__c = '${password.trim()}'`;
-      
+
       const response = await axios.get(
         `${instanceUrl}/services/data/v59.0/query`,
         {

@@ -1,4 +1,3 @@
-/* ============== COMPOSANT REACT POUR LA VALIDATION DES PRESTATAIRES ============== */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { CheckCircle, Clock, AlertCircle, X } from 'lucide-react';
@@ -14,8 +13,7 @@ const ProviderValidationPage = ({ marriageId, token }) => {
   const [expiryDate, setExpiryDate] = useState(null);
   const [timeRemaining, setTimeRemaining] = useState('');
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  
-  // Charger les données au montage du composant
+
   useEffect(() => {
     if (marriageId && token) {
       checkValidationStatus();
@@ -24,33 +22,28 @@ const ProviderValidationPage = ({ marriageId, token }) => {
       setLoading(false);
     }
   }, [marriageId, token]);
-  
-  // Mise à jour du compteur toutes les secondes
+
   useEffect(() => {
     if (expiryDate && validationStatus === 'pending') {
       const timer = setInterval(() => {
         updateTimeRemaining();
       }, 1000);
-      
       return () => clearInterval(timer);
     }
   }, [expiryDate, validationStatus]);
-  
-  // Vérifier le statut de validation
+
   const checkValidationStatus = async () => {
     try {
       setLoading(true);
-      
       const response = await axios.get(`/api/weddingPlanner/validateStatus`, {
         params: { marriageId, token }
       });
-      
+
       if (response.data.success) {
         setValidationStatus(response.data.status.toLowerCase());
         setExpiryDate(new Date(response.data.expiryDate));
         setCoupleName(response.data.coupleName || '');
-        
-        // Si la validation est encore possible, charger les prestataires
+
         if (response.data.status.toLowerCase() === 'pending') {
           loadProviders();
         }
@@ -65,18 +58,15 @@ const ProviderValidationPage = ({ marriageId, token }) => {
       setLoading(false);
     }
   };
-  
-  // Charger les prestataires
+
   const loadProviders = async () => {
     try {
       const response = await axios.get(`/api/weddingPlanner/providers`, {
         params: { marriageId, token }
       });
-      
+
       if (response.data.success) {
         setProviders(response.data.providers);
-        
-        // Extraire les types de prestataires uniques
         const types = [...new Set(response.data.providers.map(p => p.Type__c))];
         setProviderTypes(types);
       } else {
@@ -86,59 +76,55 @@ const ProviderValidationPage = ({ marriageId, token }) => {
       setError(err.response?.data?.message || err.message);
     }
   };
-  
-  // Mettre à jour le temps restant
+
   const updateTimeRemaining = () => {
     if (!expiryDate) return;
-    
     const now = new Date();
     const diff = expiryDate - now;
-    
+
     if (diff <= 0) {
-      // Le délai est expiré
       setTimeRemaining('00:00:00');
       setValidationStatus('expired');
       return;
     }
-    
-    // Calculer les heures, minutes et secondes restantes
+
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    
-    // Formater le temps restant
-    setTimeRemaining(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
+
+    setTimeRemaining(
+      `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds
+        .toString()
+        .padStart(2, '0')}`
+    );
   };
-  
-  // Gérer le changement de réponse pour un prestataire
+
   const handleResponseChange = (providerId, value) => {
     setProviders(
-      providers.map(provider => 
-        provider.Id === providerId 
-          ? { ...provider, Couple_Response__c: value } 
+      providers.map(provider =>
+        provider.Id === providerId
+          ? { ...provider, Couple_Response__c: value }
           : provider
       )
     );
   };
-  
-  // Soumettre les choix de prestataires
+
   const handleSubmit = async () => {
     try {
       setLoading(true);
       setShowConfirmModal(false);
-      
-      // Préparer les choix pour l'envoi
+
       const choices = providers.map(provider => ({
         id: provider.Id,
         response: provider.Couple_Response__c || 'Not Precised'
       }));
-      
+
       const response = await axios.post(`/api/weddingPlanner/validateChoices`, {
         marriageId,
         token,
         choices
       });
-      
+
       if (response.data.success) {
         setValidationStatus('validated');
       } else {
@@ -150,31 +136,26 @@ const ProviderValidationPage = ({ marriageId, token }) => {
       setLoading(false);
     }
   };
-  
-  // Fonction pour grouper les prestataires par type
+
   const getProvidersByType = (type) => {
     return providers.filter(provider => provider.Type__c === type);
   };
-  
-  // Options pour la réponse du couple
+
   const responseOptions = ['Not Precised', 'Accepted', 'Refused'];
-  
-  // Ouvrir la fenêtre modale de confirmation
+
   const openConfirmModal = () => {
     setShowConfirmModal(true);
   };
-  
-  // Fermer la fenêtre modale
+
   const closeConfirmModal = () => {
     setShowConfirmModal(false);
   };
-  
-  // Contenu à afficher selon l'état
+
   const renderContent = () => {
     if (loading) {
       return <div className="loading">Chargement en cours...</div>;
     }
-    
+
     if (error) {
       return (
         <div className="error-container">
@@ -184,7 +165,7 @@ const ProviderValidationPage = ({ marriageId, token }) => {
         </div>
       );
     }
-    
+
     if (validationStatus === 'expired') {
       return (
         <div className="expired-container">
@@ -195,7 +176,7 @@ const ProviderValidationPage = ({ marriageId, token }) => {
         </div>
       );
     }
-    
+
     if (validationStatus === 'validated') {
       return (
         <div className="validated-container">
@@ -206,8 +187,7 @@ const ProviderValidationPage = ({ marriageId, token }) => {
         </div>
       );
     }
-    
-    // Si en attente de validation (pending)
+
     return (
       <div className="providers-container">
         <div className="countdown-container">
@@ -215,16 +195,16 @@ const ProviderValidationPage = ({ marriageId, token }) => {
           <div className="countdown">{timeRemaining}</div>
           <p className="expiry-info">Expire le {expiryDate?.toLocaleString() || ''}</p>
         </div>
-        
+
         {providers.length > 0 ? (
           <div className="providers-content">
             {providerTypes.map(type => {
               const typeProviders = getProvidersByType(type);
-              
+
               return typeProviders.length > 0 && (
                 <div key={type} className="provider-type-section">
                   <h3 className="provider-type-title">{type}</h3>
-                  
+
                   <table className="providers-table">
                     <thead>
                       <tr>
@@ -245,16 +225,12 @@ const ProviderValidationPage = ({ marriageId, token }) => {
                           <td>{provider.Phone__c || 'N/A'}</td>
                           <td>{provider.Price__c ? `${provider.Price__c} €` : 'N/A'}</td>
                           <td>
-                            {provider.Availability__c 
-                              ? new Date(provider.Availability__c).toLocaleDateString('fr-FR') 
+                            {provider.Availability__c
+                              ? new Date(provider.Availability__c).toLocaleDateString('fr-FR')
                               : 'N/A'}
                           </td>
                           <td>{provider.Status__c || 'N/A'}</td>
-                          <td>
-                            {provider.ServiceQuality__c 
-                              ? `${provider.ServiceQuality__c}/5` 
-                              : 'N/A'}
-                          </td>
+                          <td>{provider.ServiceQuality__c ? `${provider.ServiceQuality__c}/5` : 'N/A'}</td>
                           <td>
                             {provider.References__c ? (
                               <a href={provider.References__c} target="_blank" rel="noopener noreferrer">
@@ -282,12 +258,9 @@ const ProviderValidationPage = ({ marriageId, token }) => {
                 </div>
               );
             })}
-            
+
             <div className="validation-actions">
-              <button 
-                className="validate-button"
-                onClick={openConfirmModal}
-              >
+              <button className="validate-button" onClick={openConfirmModal}>
                 Valider mes choix
               </button>
               <p className="validation-note">
@@ -303,19 +276,16 @@ const ProviderValidationPage = ({ marriageId, token }) => {
       </div>
     );
   };
-  
+
   return (
     <div className="provider-validation-page">
       <header className="validation-header">
         <h1><span className="heart-emoji">❤️</span> Validation des prestataires <span className="heart-emoji">❤️</span></h1>
         <h2>{coupleName ? `Bonjour, ${coupleName}` : 'Bonjour'}</h2>
       </header>
-      
-      <main className="validation-content">
-        {renderContent()}
-      </main>
-      
-      {/* Fenêtre modale de confirmation */}
+
+      <main className="validation-content">{renderContent()}</main>
+
       {showConfirmModal && (
         <div className="confirmation-modal">
           <div className="modal-content">

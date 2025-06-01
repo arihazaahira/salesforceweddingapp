@@ -21,7 +21,7 @@ function App() {
         <Route path="/listceremony" element={<ListCeremony />} />
         <Route path="/ceremony/:id" element={<WeddingDetails />} />
         <Route path="/providerlist" element={<ProviderList />} />
-        <Route path="/couplelogin" element={<CoupleLogin />} />
+        <Route path="/login" element={<CoupleLogin />} />
           <Route path="/acceuilcouple" element={<AcceuilCouple />} />
 
           <Route path="/coupleform" element={<CoupleForm />} />
