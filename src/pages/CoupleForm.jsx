@@ -6,6 +6,7 @@ import CoupleFormView from '../services/CoupleFormView.js';
 const SALESFORCE_CONFIG = {
   accessToken: "00DgK0000029e5F!AQEAQJkTtRAffTcCUqbYXvB.Svdgjb2BfRUhD2qOZBW8gvjyn0Cvy_8pKZlQBLm8Ww.xP.pZcahtonXAuKaUSm.Ed2Az8PB0",
   instanceUrl: 'https://orgfarm-c407668048-dev-ed.develop.my.salesforce.com',
+  apiVersion: 'v58.0'
 };
 
 // Types de prestataires
