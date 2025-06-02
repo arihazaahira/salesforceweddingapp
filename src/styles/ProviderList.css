@@ -1006,3 +1006,241 @@
 .cancel-appointment-button:hover {
   background: #fecaca;
 }
+/* Timeline Styles */
+.timeline-section {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.progress-container {
+  margin-bottom: 20px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.progress-bar {
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, #8b5cf6, #ec4899);
+  transition: width 0.3s ease;
+}
+
+.timeline-items {
+  margin: 16px 0;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.timeline-item:hover {
+  background: #f9f9f9;
+}
+
+.time-info {
+  width: 80px;
+  margin-right: 16px;
+  text-align: right;
+}
+
+.time {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.duration {
+  font-size: 12px;
+  color: #666;
+}
+
+.icon-container {
+  margin-right: 16px;
+}
+
+.icon-bg {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #f3e8ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  color: #8b5cf6;
+  width: 20px;
+  height: 20px;
+}
+
+.task-content {
+  flex: 1;
+}
+
+.task-text {
+  font-size: 15px;
+}
+
+.task-text.completed {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.item-actions {
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.timeline-item:hover .item-actions {
+  opacity: 1;
+}
+
+.complete-btn, .completed-btn, .edit-btn, .delete-btn {
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+
+.complete-btn:hover {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.completed-btn {
+  color: #16a34a;
+}
+
+.completed-btn:hover {
+  background: #f0fdf4;
+}
+
+.edit-btn:hover {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.delete-btn:hover {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.add-task-section {
+  margin-top: 20px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.add-task-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: transparent;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  width: 100%;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-task-button:hover {
+  border-color: #8b5cf6;
+  color: #8b5cf6;
+  background: #f5f3ff;
+}
+
+.add-task-form {
+  background: #f9f9f9;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.add-task-form input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.add-task-form input:focus {
+  outline: none;
+  border-color: #8b5cf6;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.form-actions button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.form-actions button:first-child {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+}
+
+.form-actions button:last-child {
+  background: #8b5cf6;
+  color: white;
+  border: none;
+}
+
+.edit-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-form input {
+  flex: 1;
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 4px;
+}

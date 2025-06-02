@@ -7,7 +7,7 @@ import {
   lockProvidersInSalesforce,
   getWeddingById
 } from '../services/ProviderService';
-import { Check, Clock, Calendar, Sparkles, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Check, Clock, Calendar, Sparkles, X, ChevronLeft, ChevronRight, CheckCircle2, Circle, Trash2, Plus, Edit3, Save, MapPin, Users, Utensils, Camera, Music, Flower, Car } from 'lucide-react';
 import '../styles/ProviderList.css';
 
 const WeddingPlannerDashboard = ({ weddingId }) => {
@@ -42,6 +42,176 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
     location: '',
     notes: ''
   });
+  const [checklistItems, setChecklistItems] = useState([
+    {
+      id: 1,
+      time: '07:00',
+      duration: 30,
+      task: 'Vérification des lieux de cérémonie',
+      icon: 'mappin',
+      completed: false,
+      editable: false,
+      editValue: ''
+    },
+    {
+      id: 2,
+      time: '07:30',
+      duration: 20,
+      task: 'Coordination avec les prestataires',
+      icon: 'users',
+      completed: false,
+      editable: false,
+      editValue: ''
+    },
+    {
+      id: 3,
+      time: '07:50',
+      duration: 15,
+      task: 'Contrôle des décorations florales',
+      icon: 'flower',
+      completed: false,
+      editable: false,
+      editValue: ''
+    },
+    {
+      id: 4,
+      time: '08:05',
+      duration: 25,
+      task: 'Vérification du matériel son/éclairage',
+      icon: 'music',
+      completed: false,
+      editable: false,
+      editValue: ''
+    },
+    {
+      id: 5,
+      time: '08:30',
+      duration: 20,
+      task: 'Briefing équipe photographe/vidéaste',
+      icon: 'camera',
+      completed: false,
+      editable: false,
+      editValue: ''
+    },
+    {
+      id: 6,
+      time: '08:50',
+      duration: 30,
+      task: 'Coordination transport des mariés',
+      icon: 'car',
+      completed: false,
+      editable: false,
+      editValue: ''
+    },
+    {
+      id: 7,
+      time: '09:20',
+      duration: 40,
+      task: 'Vérification finale du banquet',
+      icon: 'utensils',
+      completed: false,
+      editable: false,
+      editValue: ''
+    },
+    {
+      id: 8,
+      time: '10:00',
+      duration: 15,
+      task: 'Tour de contrôle général',
+      icon: 'clock',
+      completed: false,
+      editable: false,
+      editValue: ''
+    }
+  ]);
+
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newTask, setNewTask] = useState({
+    time: '',
+    duration: '',
+    task: '',
+    icon: 'clock'
+  });
+
+  const iconMap = {
+    mappin: MapPin,
+    users: Users,
+    flower: Flower,
+    music: Music,
+    camera: Camera,
+    car: Car,
+    utensils: Utensils,
+    clock: Clock
+  };
+
+  const toggleComplete = (id) => {
+    setChecklistItems(items =>
+      items.map(item =>
+        item.id === id ? { ...item, completed: !item.completed } : item
+      )
+    );
+  };
+
+  const deleteItem = (id) => {
+    setChecklistItems(items => items.filter(item => item.id !== id));
+  };
+
+  const startEdit = (id) => {
+    setChecklistItems(items =>
+      items.map(item =>
+        item.id === id ? { ...item, editable: true, editValue: item.task } : item
+      )
+    );
+  };
+
+  const saveEdit = (id) => {
+    setChecklistItems(items =>
+      items.map(item =>
+        item.id === id ? { 
+          ...item, 
+          task: item.editValue, 
+          editable: false, 
+          editValue: '' 
+        } : item
+      )
+    );
+  };
+
+  const cancelEdit = (id) => {
+    setChecklistItems(items =>
+      items.map(item =>
+        item.id === id ? { ...item, editable: false, editValue: '' } : item
+      )
+    );
+  };
+
+  const updateEditValue = (id, value) => {
+    setChecklistItems(items =>
+      items.map(item =>
+        item.id === id ? { ...item, editValue: value } : item
+      )
+    );
+  };
+
+  const addNewTask = () => {
+    if (newTask.time && newTask.task) {
+      const newId = Math.max(...checklistItems.map(item => item.id)) + 1;
+      setChecklistItems([...checklistItems, {
+        ...newTask,
+        id: newId,
+        duration: parseInt(newTask.duration) || 15,
+        completed: false,
+        editable: false,
+        editValue: ''
+      }]);
+      setNewTask({ time: '', duration: '', task: '', icon: 'clock' });
+      setShowAddForm(false);
+    }
+  };
+
+  const completedCount = checklistItems.filter(item => item.completed).length;
+  const totalCount = checklistItems.length;
+
 
   const typeOptions = ['DJ', 'Dresser', 'Logistics provider', 'Makeup Artist', 'Food Provider', 'Flower Provider'];
   const statusOptions = ['Not Confirmed', 'Processing', 'Finished'];
@@ -868,11 +1038,144 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
           </div>
         )}
 
-        {activeStep === 3 && (
-          <div>
-            <h2>Last Wedding Touch Up</h2>
-            <div className="final-touch-container">
-              <p>Cette section concernera les dernières touches à apporter au mariage avant le jour J.</p>
+{activeStep === 3 && (
+  <div>
+    <h2>Last Wedding Touch Up</h2>
+    <div className="final-touch-container">
+      {/* Timeline Section */}
+      <div className="timeline-section">
+        <h3>Wedding Day Timeline</h3>
+        <div className="timeline-container">
+          <div className="timeline-header">
+            <div className="progress-container">
+              <div className="progress-info">
+                <span>Progression</span>
+                <span>{completedCount}/{totalCount}</span>
+              </div>
+              <div className="progress-bar">
+                <div 
+                  className="progress-fill"
+                  style={{ width: `${(completedCount / totalCount) * 100}%` }}
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="timeline-items">
+            {checklistItems.map((item) => {
+              const IconComponent = iconMap[item.icon];
+              
+              return (
+                <div key={item.id} className="timeline-item">
+                  <div className="time-info">
+                    <div className="time">{item.time}</div>
+                    <div className="duration">{item.duration} min</div>
+                  </div>
+
+                  <div className="icon-container">
+                    <div className="icon-bg">
+                      <IconComponent className="icon" />
+                    </div>
+                  </div>
+
+                  <div className="task-content">
+                    {item.editable ? (
+                      <div className="edit-form">
+                        <input
+                          type="text"
+                          value={item.editValue}
+                          onChange={(e) => updateEditValue(item.id, e.target.value)}
+                        />
+                        <div className="edit-actions">
+                          <button onClick={() => saveEdit(item.id)}>
+                            <Save size={16} />
+                          </button>
+                          <button onClick={() => cancelEdit(item.id)}>
+                            <X size={16} />
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className={`task-text ${item.completed ? 'completed' : ''}`}>
+                        {item.task}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="item-actions">
+                    <button
+                      onClick={() => toggleComplete(item.id)}
+                      className={item.completed ? 'completed-btn' : 'complete-btn'}
+                    >
+                      {item.completed ? <CheckCircle2 size={18} /> : <Circle size={18} />}
+                    </button>
+                    
+                    {!item.editable && (
+                      <button
+                        onClick={() => startEdit(item.id)}
+                        className="edit-btn"
+                      >
+                        <Edit3 size={16} />
+                      </button>
+                    )}
+                    
+                    <button
+                      onClick={() => deleteItem(item.id)}
+                      className="delete-btn"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="add-task-section">
+            {showAddForm ? (
+              <div className="add-task-form">
+                <div className="form-grid">
+                  <input
+                    type="time"
+                    value={newTask.time}
+                    onChange={(e) => setNewTask({...newTask, time: e.target.value})}
+                    placeholder="Heure"
+                  />
+                  <input
+                    type="number"
+                    value={newTask.duration}
+                    onChange={(e) => setNewTask({...newTask, duration: e.target.value})}
+                    placeholder="Durée (min)"
+                  />
+                </div>
+                <input
+                  type="text"
+                  value={newTask.task}
+                  onChange={(e) => setNewTask({...newTask, task: e.target.value})}
+                  placeholder="Nouvelle tâche"
+                />
+                <div className="form-actions">
+                  <button onClick={() => setShowAddForm(false)}>
+                    Annuler
+                  </button>
+                  <button onClick={addNewTask}>
+                    Ajouter
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowAddForm(true)}
+                className="add-task-button"
+              >
+                <Plus size={18} />
+                <span>Ajouter une tâche</span>
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
               
               <div className="summary-section">
                 <h3>Récapitulatif final</h3>
