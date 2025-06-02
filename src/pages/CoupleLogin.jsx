@@ -15,18 +15,8 @@ const CoupleLogin = () => {
     setIsLoading(true);
     setError('');
 
-
-    if (
-      loginName.trim().toLowerCase() === 'weddingplanner@gmail.com' &&
-      password.trim() === 'weddingplanner'
-    ) {
-      window.location.href = 'http://localhost:3000/';
-      return;
-    }
-
-    const accessToken = process.env.REACT_APP_SF_ACCESS_TOKEN;
-    const instanceUrl = process.env.REACT_APP_SF_INSTANCE_URL;
-
+    const accessToken = "00DgK0000029e5F!AQEAQJkTtRAffTcCUqbYXvB.Svdgjb2BfRUhD2qOZBW8gvjyn0Cvy_8pKZlQBLm8Ww.xP.pZcahtonXAuKaUSm.Ed2Az8PB0";
+    const instanceUrl = 'https://orgfarm-c407668048-dev-ed.develop.my.salesforce.com';
 
     try {
       const query = `SELECT Id, Mot_de_passe__c FROM Login_Couple__c WHERE Name = '${loginName.trim()}' AND Mot_de_passe__c = '${password.trim()}'`;

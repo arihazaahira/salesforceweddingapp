@@ -7,7 +7,7 @@ import {
   lockProvidersInSalesforce,
   getWeddingById
 } from '../services/ProviderService';
-import { Check, Clock, Calendar, Sparkles } from 'lucide-react';
+import { Check, Clock, Calendar, Sparkles, X, ChevronLeft, ChevronRight, CheckCircle2, Circle, Trash2, Plus, Edit3, Save, MapPin, Users, Utensils, Camera, Music, Flower, Car } from 'lucide-react';
 import '../styles/ProviderList.css';
 
 const WeddingPlannerDashboard = ({ weddingId }) => {
@@ -29,6 +29,190 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
     References__c: ''
   });
 
+  // États pour la gestion des rendez-vous
+  const [appointments, setAppointments] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedProvider, setSelectedProvider] = useState(null);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [appointmentForm, setAppointmentForm] = useState({
+    date: '',
+    time: '',
+    duration: '60',
+    location: '',
+    notes: ''
+  });
+  const [checklistItems, setChecklistItems] = useState([
+    {
+      id: 1,
+      time: '07:00',
+      duration: 30,
+      task: 'Vérification des lieux de cérémonie',
+      icon: 'mappin',
+      completed: false,
+      editable: false,
+      editValue: ''
+    },
+    {
+      id: 2,
+      time: '07:30',
+      duration: 20,
+      task: 'Coordination avec les prestataires',
+      icon: 'users',
+      completed: false,
+      editable: false,
+      editValue: ''
+    },
+    {
+      id: 3,
+      time: '07:50',
+      duration: 15,
+      task: 'Contrôle des décorations florales',
+      icon: 'flower',
+      completed: false,
+      editable: false,
+      editValue: ''
+    },
+    {
+      id: 4,
+      time: '08:05',
+      duration: 25,
+      task: 'Vérification du matériel son/éclairage',
+      icon: 'music',
+      completed: false,
+      editable: false,
+      editValue: ''
+    },
+    {
+      id: 5,
+      time: '08:30',
+      duration: 20,
+      task: 'Briefing équipe photographe/vidéaste',
+      icon: 'camera',
+      completed: false,
+      editable: false,
+      editValue: ''
+    },
+    {
+      id: 6,
+      time: '08:50',
+      duration: 30,
+      task: 'Coordination transport des mariés',
+      icon: 'car',
+      completed: false,
+      editable: false,
+      editValue: ''
+    },
+    {
+      id: 7,
+      time: '09:20',
+      duration: 40,
+      task: 'Vérification finale du banquet',
+      icon: 'utensils',
+      completed: false,
+      editable: false,
+      editValue: ''
+    },
+    {
+      id: 8,
+      time: '10:00',
+      duration: 15,
+      task: 'Tour de contrôle général',
+      icon: 'clock',
+      completed: false,
+      editable: false,
+      editValue: ''
+    }
+  ]);
+
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newTask, setNewTask] = useState({
+    time: '',
+    duration: '',
+    task: '',
+    icon: 'clock'
+  });
+
+  const iconMap = {
+    mappin: MapPin,
+    users: Users,
+    flower: Flower,
+    music: Music,
+    camera: Camera,
+    car: Car,
+    utensils: Utensils,
+    clock: Clock
+  };
+
+  const toggleComplete = (id) => {
+    setChecklistItems(items =>
+      items.map(item =>
+        item.id === id ? { ...item, completed: !item.completed } : item
+      )
+    );
+  };
+
+  const deleteItem = (id) => {
+    setChecklistItems(items => items.filter(item => item.id !== id));
+  };
+
+  const startEdit = (id) => {
+    setChecklistItems(items =>
+      items.map(item =>
+        item.id === id ? { ...item, editable: true, editValue: item.task } : item
+      )
+    );
+  };
+
+  const saveEdit = (id) => {
+    setChecklistItems(items =>
+      items.map(item =>
+        item.id === id ? { 
+          ...item, 
+          task: item.editValue, 
+          editable: false, 
+          editValue: '' 
+        } : item
+      )
+    );
+  };
+
+  const cancelEdit = (id) => {
+    setChecklistItems(items =>
+      items.map(item =>
+        item.id === id ? { ...item, editable: false, editValue: '' } : item
+      )
+    );
+  };
+
+  const updateEditValue = (id, value) => {
+    setChecklistItems(items =>
+      items.map(item =>
+        item.id === id ? { ...item, editValue: value } : item
+      )
+    );
+  };
+
+  const addNewTask = () => {
+    if (newTask.time && newTask.task) {
+      const newId = Math.max(...checklistItems.map(item => item.id)) + 1;
+      setChecklistItems([...checklistItems, {
+        ...newTask,
+        id: newId,
+        duration: parseInt(newTask.duration) || 15,
+        completed: false,
+        editable: false,
+        editValue: ''
+      }]);
+      setNewTask({ time: '', duration: '', task: '', icon: 'clock' });
+      setShowAddForm(false);
+    }
+  };
+
+  const completedCount = checklistItems.filter(item => item.completed).length;
+  const totalCount = checklistItems.length;
+
+
   const typeOptions = ['DJ', 'Dresser', 'Logistics provider', 'Makeup Artist', 'Food Provider', 'Flower Provider'];
   const statusOptions = ['Not Confirmed', 'Processing', 'Finished'];
   const coupleResponseOptions = ['Accepted', 'Refused', 'Not Precised'];
@@ -48,11 +232,6 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
   };
 
   const handleChange = (e) => {
-    // Empêcher toute modification si la liste est verrouillée
-    if (providersLocked) {
-      return;
-    }
-    
     const { name, value } = e.target;
     setNewProvider((prev) => ({ ...prev, [name]: value }));
   };
@@ -71,7 +250,6 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
       alert("La liste des prestataires est verrouillée. Ajout impossible.");
       return;
     }
-    
     const requiredFields = ['Name', 'Type__c', 'Status__c', 'Couple_Response__c'];
     const missingFields = requiredFields.filter((field) => !newProvider[field]);
 
@@ -151,9 +329,7 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
       const result = await lockProvidersInSalesforce(weddingId);
       
       if (result && result[0]?.success) {
-        // Mettre à jour l'état de verrouillage IMMÉDIATEMENT
         setProvidersLocked(true);
-        
         alert(
           '✅ Liste des prestataires finalisée avec succès !\n\n' +
           '📧 Un email a été envoyé au couple avec la liste des prestataires.\n' +
@@ -161,19 +337,6 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
           '🔒 Vous ne pouvez plus modifier la liste des prestataires.'
         );
         setActiveStep(1);
-        
-        // Réinitialiser le formulaire pour éviter tout problème
-        setNewProvider({
-          Name: '',
-          Type__c: '',
-          Phone__c: '',
-          Status__c: '',
-          Couple_Response__c: '',
-          Price__c: '',
-          Availability__c: '',
-          ServiceQuality__c: '',
-          References__c: ''
-        });
       } else {
         throw new Error(result?.[0]?.message || 'Erreur inconnue lors du verrouillage');
       }
@@ -191,17 +354,59 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
   };
 
   const handleDelete = async (id) => {
-    if (providersLocked) {
-      alert("La liste des prestataires est verrouillée. Suppression impossible.");
-      return;
-    }
-    
     try {
       await deleteProvider(id);
       fetchProviders();
     } catch (error) {
       console.error("Erreur lors de la suppression du prestataire :", error);
     }
+  };
+  const handleEditAppointment = (appointmentId) => {
+    const appointmentToEdit = appointments.find(apt => apt.id === appointmentId);
+    if (!appointmentToEdit) return;
+  
+    setSelectedProvider({
+      Id: appointmentToEdit.providerId,
+      Name: appointmentToEdit.providerName,
+      Type__c: appointmentToEdit.providerType
+    });
+  
+    setAppointmentForm({
+      date: appointmentToEdit.date,
+      time: appointmentToEdit.time,
+      duration: appointmentToEdit.duration,
+      location: appointmentToEdit.location,
+      notes: appointmentToEdit.notes
+    });
+  
+    setSelectedDate(new Date(appointmentToEdit.date));
+    setShowModal(true);
+  };
+  
+  const handleCancelAppointment = (appointmentId) => {
+    if (window.confirm("Êtes-vous sûr de vouloir annuler ce rendez-vous ?")) {
+      setAppointments(prev => prev.filter(apt => apt.id !== appointmentId));
+    }
+  };
+  
+  const handleUpdateAppointment = () => {
+    if (!selectedProvider) return;
+  
+    setAppointments(prev => prev.map(apt => 
+      apt.providerId === selectedProvider.Id
+        ? {
+            ...apt,
+            date: appointmentForm.date,
+            time: appointmentForm.time,
+            duration: appointmentForm.duration,
+            location: appointmentForm.location,
+            notes: appointmentForm.notes
+          }
+        : apt
+    ));
+  
+    closeAppointmentModal();
+    alert('Rendez-vous modifié avec succès !');
   };
 
   const onCoupleApproval = async (selectedProviderId, type) => {
@@ -214,6 +419,151 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
       fetchProviders();
     } catch (error) {
       console.error("Erreur lors de la mise à jour de la réponse du couple :", error);
+    }
+  };
+
+  // Fonctions pour la gestion des rendez-vous
+  const openAppointmentModal = (provider) => {
+    setSelectedProvider(provider);
+    setShowModal(true);
+    setSelectedDate(null);
+    setAppointmentForm({
+      date: '',
+      time: '',
+      duration: '60',
+      location: '',
+      notes: ''
+    });
+  };
+
+  const closeAppointmentModal = () => {
+    setShowModal(false);
+    setSelectedProvider(null);
+    setSelectedDate(null);
+  };
+
+  const handleDateSelect = (date) => {
+    setSelectedDate(date);
+    setAppointmentForm(prev => ({
+      ...prev,
+      date: date.toISOString().split('T')[0]
+    }));
+  };
+
+  const handleAppointmentFormChange = (e) => {
+    const { name, value } = e.target;
+    setAppointmentForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const confirmAppointment = () => {
+    const existingAppointment = appointments.find(
+      apt => apt.providerId === selectedProvider.Id
+    );
+  
+    if (existingAppointment) {
+      alert(`Un rendez-vous est déjà planifié avec ${selectedProvider.Name}.
+  Date: ${existingAppointment.date} à ${existingAppointment.time}`);
+      return;
+    }
+    if (!appointmentForm.date || !appointmentForm.time) {
+      alert('Veuillez sélectionner une date et une heure.');
+      return;
+    }
+    const isEditing = appointments.some(apt => apt.providerId === selectedProvider.Id);
+    if (isEditing) {
+      handleUpdateAppointment();
+    }
+
+    else {
+      const newAppointment = {
+        id: Date.now().toString(),
+        providerId: selectedProvider.Id,
+        providerName: selectedProvider.Name,
+        providerType: selectedProvider.Type__c,
+        date: appointmentForm.date,
+        time: appointmentForm.time,
+        duration: appointmentForm.duration,
+        location: appointmentForm.location,
+        notes: appointmentForm.notes,
+        status: 'Planifié'
+      };
+  
+      setAppointments(prev => [...prev, newAppointment]);
+      closeAppointmentModal();
+      alert('Rendez-vous planifié avec succès !');
+    }
+  };
+
+  const getDaysInMonth = (date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const daysInMonth = lastDay.getDate();
+    const startingDayOfWeek = firstDay.getDay();
+
+    const days = [];
+    
+    // Jours du mois précédent
+    for (let i = startingDayOfWeek - 1; i >= 0; i--) {
+      const prevDate = new Date(year, month, -i);
+      days.push({ date: prevDate, isCurrentMonth: false });
+    }
+    
+    // Jours du mois actuel
+    for (let day = 1; day <= daysInMonth; day++) {
+      const currentDate = new Date(year, month, day);
+      days.push({ date: currentDate, isCurrentMonth: true });
+    }
+    
+    // Compléter jusqu'à 42 cases (6 semaines)
+    const remainingDays = 42 - days.length;
+    for (let day = 1; day <= remainingDays; day++) {
+      const nextDate = new Date(year, month + 1, day);
+      days.push({ date: nextDate, isCurrentMonth: false });
+    }
+    
+    return days;
+  };
+
+  const isDateDisabled = (date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return date < today;
+  };
+
+  const hasAppointmentOnDate = (date,providerId) => {
+    const dateStr = date.toISOString().split('T')[0];
+  return appointments.some(apt => 
+    apt.providerId === providerId && 
+    apt.date === dateStr
+  );
+};
+
+  const getAppointmentsForProvider = (providerId) => {
+    return appointments.filter(apt => apt.providerId === providerId);
+
+  };
+  
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('fr-FR', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'Planifié': return 'bg-blue-100 text-blue-800';
+      case 'Confirmé': return 'bg-green-100 text-green-800';
+      case 'Annulé': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -305,7 +655,6 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                       placeholder="Nom du prestataire"
                       value={newProvider.Name}
                       onChange={handleChange}
-                      disabled={providersLocked || isLocking}
                     />
                   </div>
 
@@ -315,7 +664,6 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                       name="Type__c" 
                       value={newProvider.Type__c} 
                       onChange={handleChange}
-                      disabled={providersLocked || isLocking}
                     >
                       <option value="">Type de service</option>
                       {typeOptions.map((type) => (
@@ -332,7 +680,6 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                       placeholder="Téléphone"
                       value={newProvider.Phone__c}
                       onChange={handleChange}
-                      disabled={providersLocked || isLocking}
                     />
                   </div>
 
@@ -342,7 +689,6 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                       name="Status__c" 
                       value={newProvider.Status__c} 
                       onChange={handleChange}
-                      disabled={providersLocked || isLocking}
                     >
                       <option value="">Statut</option>
                       {statusOptions.map((status) => (
@@ -359,7 +705,6 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                       placeholder="Prix estimé"
                       value={newProvider.Price__c}
                       onChange={handleChange}
-                      disabled={providersLocked || isLocking}
                     />
                   </div>
 
@@ -370,7 +715,6 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                       name="Availability__c"
                       value={newProvider.Availability__c}
                       onChange={handleChange}
-                      disabled={providersLocked || isLocking}
                     />
                   </div>
 
@@ -385,7 +729,6 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                             value={star}
                             checked={newProvider.ServiceQuality__c === star.toString()}
                             onChange={handleChange}
-                            disabled={providersLocked || isLocking}
                           />
                           {star}
                         </label>
@@ -401,7 +744,6 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                       placeholder="Références (URL)"
                       value={newProvider.References__c}
                       onChange={handleChange}
-                      disabled={providersLocked || isLocking}
                     />
                   </div>
 
@@ -411,7 +753,6 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                       name="Couple_Response__c" 
                       value={newProvider.Couple_Response__c} 
                       onChange={handleChange}
-                      disabled={providersLocked || isLocking}
                     >
                       <option value="">Réponse du couple</option>
                       {coupleResponseOptions.map((response) => (
@@ -425,16 +766,15 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                   <button 
                     className="add-provider-button"
                     onClick={handleAdd}
-                    disabled={providersLocked || isLocking}
                   >
-                    {providersLocked ? 'Liste verrouillée' : 'Ajouter le prestataire'}
+                    Ajouter le prestataire
                   </button>
                 </div>
               </div>
             ) : (
               <div className="locked-notification">
                 <div className="locked-notification-content">
-                  <span>🔒 La liste des prestataires a été finalisée. Vous ne pouvez plus ajouter de prestataires.</span>
+                  <span>La liste des prestataires a été finalisée. Vous ne pouvez plus ajouter de prestataires.</span>
                 </div>
               </div>
             )}
@@ -496,9 +836,8 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                                         onClick={() => handleDelete(provider.Id)}
                                         className="delete-button"
                                         disabled={providersLocked}
-                                        title={providersLocked ? "Liste verrouillée - suppression impossible" : "Supprimer ce prestataire"}
                                       >
-                                        {providersLocked ? 'Verrouillé' : 'Supprimer'}
+                                        Supprimer
                                       </button>
                                     </td>
                                   </tr>
@@ -568,34 +907,275 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
                   <div className="providers-grid">
                     {providers
                       .filter(p => p.Couple_Response__c === 'Accepted')
-                      .map(provider => (
-                        <div key={provider.Id} className="provider-card">
-                          <div className="provider-name">{provider.Name}</div>
-                          <div className="provider-type">{provider.Type__c}</div>
-                          <div className="provider-phone">Téléphone: {provider.Phone__c || 'Non spécifié'}</div>
-                          <div className="provider-availability">Disponibilité: {provider.Availability__c || 'Non spécifiée'}</div>
-                          <div className="schedule-button-container">
-                            <button className="schedule-button">
-                              Planifier un RDV
+                      .map(provider => {
+                        const providerAppointments = getAppointmentsForProvider(provider.Id);
+                        const hasAppointment = providerAppointments.length > 0;
+                        return (
+                          <div key={provider.Id} className="provider-card">
+                            <div className="provider-name">{provider.Name}</div>
+                            <div className="provider-type">{provider.Type__c}</div>
+                            <div className="provider-phone">Téléphone: {provider.Phone__c || 'Non spécifié'}</div>
+                            <div className="provider-availability">Disponibilité: {provider.Availability__c || 'Non spécifiée'}</div>
+                            
+                            {providerAppointments.length > 0 && (
+                              <div className="provider-appointments">
+                                <h4>Rendez-vous planifiés:</h4>
+                                {providerAppointments.map(apt => (
+                                  <div key={apt.id} className="appointment-item">
+                                    <div className="appointment-date">{apt.date} à {apt.time}</div>
+                                    <div className="appointment-location">{apt.location}</div>
+                                    <div className="appointment-status">{apt.status}</div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            <div className="schedule-button-container">
+                              <button 
+                              className={`schedule-button ${hasAppointment ? 'disabled-button' : ''}`}
+                              onClick={() => !hasAppointment && openAppointmentModal(provider)}
+                              disabled={hasAppointment}
+                            >
+                              {hasAppointment ? (
+                                <>
+                                  <Check size={16} /> RDV Planifié
+                                </>
+                              ) : (
+                                'Planifier un RDV'
+                              )}
                             </button>
+                            
+                            {hasAppointment && (
+  <div className="appointment-actions">
+    <button 
+      className="view-appointment-button"
+      onClick={() => handleEditAppointment(providerAppointments[0].id)}
+    >
+      Modifier le RDV
+    </button>
+    <button 
+      className="cancel-appointment-button"
+      onClick={() => handleCancelAppointment(providerAppointments[0].id)}
+    >
+      Annuler
+    </button>
+  </div>
+)}
+                            </div>
                           </div>
-                        </div>
-                      ))
+                        );
+                      })
                     }
                   </div>
                 ) : (
                   <p>Aucun prestataire n'a encore été accepté par le couple.</p>
                 )}
               </div>
+
+              {/* Liste de tous les rendez-vous */}
+              {appointments.length > 0 && (
+  <div className="all-appointments-section">
+    <h3 className="appointments-title">Agenda des Rendez-vous</h3>
+    <div className="appointments-timeline">
+      {appointments
+        .sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`))
+        .map(apt => (
+          <div key={apt.id} className="timeline-item">
+            <div className="timeline-date">
+              <div className="timeline-day">
+                {new Date(apt.date).toLocaleDateString('fr-FR', { day: 'numeric' })}
+              </div>
+              <div className="timeline-month">
+                {new Date(apt.date).toLocaleDateString('fr-FR', { month: 'short' })}
+              </div>
+            </div>
+            <div className="timeline-content">
+              <div className="timeline-header">
+                <h4>{apt.providerName} - {apt.providerType}</h4>
+                <span className={`timeline-status ${getStatusColor(apt.status).replace('bg-', '')}`}>
+                  {apt.status}
+                </span>
+              </div>
+              <div className="timeline-details">
+                <div className="timeline-time">
+                  <Clock size={16} />
+                  {apt.time} (Durée: {apt.duration} min)
+                </div>
+                {apt.location && (
+                  <div className="timeline-location">
+                    📍 {apt.location}
+                  </div>
+                )}
+                {apt.notes && (
+                  <div className="timeline-notes">
+                    <div className="notes-label">Notes :</div>
+                    <div>{apt.notes}</div>
+                  </div>
+                )}
+              </div>
+              <div className="timeline-actions">
+              <button 
+    className="edit-button"
+    onClick={() => handleEditAppointment(apt.id)}
+  >
+    Modifier
+  </button>
+  <button 
+    className="cancel-button"
+    onClick={() => handleCancelAppointment(apt.id)}
+  >
+    Annuler
+  </button>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+)}
             </div>
           </div>
         )}
 
-        {activeStep === 3 && (
-          <div>
-            <h2>Last Wedding Touch Up</h2>
-            <div className="final-touch-container">
-              <p>Cette section concernera les dernières touches à apporter au mariage avant le jour J.</p>
+{activeStep === 3 && (
+  <div>
+    <h2>Last Wedding Touch Up</h2>
+    <div className="final-touch-container">
+      {/* Timeline Section */}
+      <div className="timeline-section">
+        <h3>Wedding Day Timeline</h3>
+        <div className="timeline-container">
+          <div className="timeline-header">
+            <div className="progress-container">
+              <div className="progress-info">
+                <span>Progression</span>
+                <span>{completedCount}/{totalCount}</span>
+              </div>
+              <div className="progress-bar">
+                <div 
+                  className="progress-fill"
+                  style={{ width: `${(completedCount / totalCount) * 100}%` }}
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="timeline-items">
+            {checklistItems.map((item) => {
+              const IconComponent = iconMap[item.icon];
+              
+              return (
+                <div key={item.id} className="timeline-item">
+                  <div className="time-info">
+                    <div className="time">{item.time}</div>
+                    <div className="duration">{item.duration} min</div>
+                  </div>
+
+                  <div className="icon-container">
+                    <div className="icon-bg">
+                      <IconComponent className="icon" />
+                    </div>
+                  </div>
+
+                  <div className="task-content">
+                    {item.editable ? (
+                      <div className="edit-form">
+                        <input
+                          type="text"
+                          value={item.editValue}
+                          onChange={(e) => updateEditValue(item.id, e.target.value)}
+                        />
+                        <div className="edit-actions">
+                          <button onClick={() => saveEdit(item.id)}>
+                            <Save size={16} />
+                          </button>
+                          <button onClick={() => cancelEdit(item.id)}>
+                            <X size={16} />
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className={`task-text ${item.completed ? 'completed' : ''}`}>
+                        {item.task}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="item-actions">
+                    <button
+                      onClick={() => toggleComplete(item.id)}
+                      className={item.completed ? 'completed-btn' : 'complete-btn'}
+                    >
+                      {item.completed ? <CheckCircle2 size={18} /> : <Circle size={18} />}
+                    </button>
+                    
+                    {!item.editable && (
+                      <button
+                        onClick={() => startEdit(item.id)}
+                        className="edit-btn"
+                      >
+                        <Edit3 size={16} />
+                      </button>
+                    )}
+                    
+                    <button
+                      onClick={() => deleteItem(item.id)}
+                      className="delete-btn"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="add-task-section">
+            {showAddForm ? (
+              <div className="add-task-form">
+                <div className="form-grid">
+                  <input
+                    type="time"
+                    value={newTask.time}
+                    onChange={(e) => setNewTask({...newTask, time: e.target.value})}
+                    placeholder="Heure"
+                  />
+                  <input
+                    type="number"
+                    value={newTask.duration}
+                    onChange={(e) => setNewTask({...newTask, duration: e.target.value})}
+                    placeholder="Durée (min)"
+                  />
+                </div>
+                <input
+                  type="text"
+                  value={newTask.task}
+                  onChange={(e) => setNewTask({...newTask, task: e.target.value})}
+                  placeholder="Nouvelle tâche"
+                />
+                <div className="form-actions">
+                  <button onClick={() => setShowAddForm(false)}>
+                    Annuler
+                  </button>
+                  <button onClick={addNewTask}>
+                    Ajouter
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowAddForm(true)}
+                className="add-task-button"
+              >
+                <Plus size={18} />
+                <span>Ajouter une tâche</span>
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
               
               <div className="summary-section">
                 <h3>Récapitulatif final</h3>
@@ -643,6 +1223,181 @@ const WeddingPlannerDashboard = ({ weddingId }) => {
           </div>
         )}
       </div>
+
+      {/* Modal de planification de rendez-vous */}
+      {showModal && (
+        <div className="modal-overlay" onClick={closeAppointmentModal}>
+          <div className="appointment-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3> {appointments.some(apt => apt.providerId === selectedProvider?.Id) 
+      ? "Modifier le rendez-vous" 
+      : "Planifier un rendez-vous"} avec {selectedProvider?.Name}</h3>
+              <button className="close-button" onClick={closeAppointmentModal}>
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="modal-content">
+              {/* Calendrier */}
+              <div className="calendar-section">
+  <div className="calendar-header">
+    <button 
+      onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))}
+      className="nav-button"
+    >
+      <ChevronLeft size={20} />
+    </button>
+    <h4 className="calendar-month-title">
+      {currentDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}
+    </h4>
+    <button 
+      onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))}
+      className="nav-button"
+    >
+      <ChevronRight size={20} />
+    </button>
+  </div>
+
+  <div className="calendar-grid">
+    <div className="calendar-weekdays">
+      {['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'].map(day => (
+        <div key={day} className="weekday">{day}</div>
+      ))}
+    </div>
+    <div className="calendar-days-grid">
+      {getDaysInMonth(currentDate).map((dayInfo, index) => {
+        const { date, isCurrentMonth } = dayInfo;
+        const isDisabled = isDateDisabled(date);
+        const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
+        const hasAppointment = hasAppointmentOnDate(date);
+        
+        return (
+          <div
+            key={index}
+            className={`calendar-day-container ${
+              !isCurrentMonth ? 'other-month' : ''
+            }`}
+          >
+            <button
+              className={`calendar-day ${
+                isDisabled ? 'disabled' : ''
+              } ${isSelected ? 'selected' : ''} ${
+                hasAppointment ? 'has-appointment' : ''
+              }`}
+              onClick={() => !isDisabled && isCurrentMonth && handleDateSelect(date)}
+              disabled={isDisabled || !isCurrentMonth}
+            >
+              <span className="day-number">{date.getDate()}</span>
+              {hasAppointment && (
+                <span className="appointment-dot"></span>
+              )}
+            </button>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</div>
+
+              {/* Formulaire de détails */}
+              {selectedDate && (
+              // Remplacer la section du formulaire de rendez-vous
+<div className="appointment-form">
+  <h4 className="form-title">Détails du rendez-vous</h4>
+  <div className="selected-date-info">
+    <Calendar size={18} className="icon" />
+    {selectedDate.toLocaleDateString('fr-FR', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    })}
+  </div>
+
+  <div className="form-grid">
+    <div className="form-group">
+      <label>Heure du rendez-vous</label>
+      <div className="select-wrapper">
+        <select
+          name="time"
+          value={appointmentForm.time}
+          onChange={handleAppointmentFormChange}
+          required
+        >
+          <option value="">Sélectionner une heure</option>
+          {Array.from({ length: 12 }, (_, i) => {
+            const hour = i + 8; // De 8h à 19h
+            return (
+              <option key={hour} value={`${hour}:00`}>
+                {hour}:00
+              </option>
+            );
+          })}
+        </select>
+      </div>
+    </div>
+
+    <div className="form-group">
+      <label>Durée</label>
+      <div className="select-wrapper">
+        <select
+          name="duration"
+          value={appointmentForm.duration}
+          onChange={handleAppointmentFormChange}
+        >
+          <option value="30">30 minutes</option>
+          <option value="60">1 heure</option>
+          <option value="90">1h30</option>
+          <option value="120">2 heures</option>
+        </select>
+      </div>
+    </div>
+
+    <div className="form-group full-width">
+      <label>Lieu ou modalité</label>
+      <input
+        type="text"
+        name="location"
+        placeholder="Adresse physique ou lien visio"
+        value={appointmentForm.location}
+        onChange={handleAppointmentFormChange}
+      />
+    </div>
+
+    <div className="form-group full-width">
+      <label>Notes et objectifs</label>
+      <textarea
+        name="notes"
+        placeholder="Points à aborder, préparations nécessaires..."
+        value={appointmentForm.notes}
+        onChange={handleAppointmentFormChange}
+        rows="3"
+      />
+    </div>
+  </div>
+
+  <div className="form-actions">
+    <button
+      type="button"
+      onClick={closeAppointmentModal}
+      className="secondary-button"
+    >
+      Annuler
+    </button>
+    <button
+      type="button"
+      onClick={confirmAppointment}
+      className="primary-button"
+    >
+      Confirmer le rendez-vous
+    </button>
+  </div>
+</div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

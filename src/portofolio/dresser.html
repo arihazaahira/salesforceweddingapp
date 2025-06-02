@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atelier Kenza - Créateur de Vêtements Mariage Marocain</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #faf8f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #c9302c, #8b1538, #5d1049);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M20 20 L80 20 L80 80 L20 80 Z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><path d="M30 30 L70 30 L70 70 L30 70 Z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat;
+            background-size: 80px 80px;
+            opacity: 0.3;
+        }
+
+        .logo {
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo h1 {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: bold;
+        }
+
+        .logo p {
+            font-size: 1.3rem;
+            font-style: italic;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.8;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(201, 48, 44, 0.95);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav li {
+            margin: 0 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 0;
+            margin: 2rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            color: #8b1538;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(to right, #c9302c, #8b1538);
+            border-radius: 2px;
+        }
+
+        /* About Section */
+        .about {
+            background: white;
+            border-radius: 20px;
+            padding: 4rem;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #555;
+            text-align: justify;
+        }
+
+        .about-highlight {
+            background: linear-gradient(135deg, #c9302c, #8b1538);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .about-highlight h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .about-image {
+            background: linear-gradient(45deg, #c9302c, #8b1538, #5d1049);
+            height: 400px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image::before {
+            content: '✂️';
+            font-size: 6rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.3;
+        }
+
+        .about-image-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Services Section */
+        .services {
+            background: #f8f4f0;
+            padding: 5rem 0;
+            border-radius: 20px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(to right, #c9302c, #8b1538);
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .service-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: #c9302c;
+        }
+
+        .service-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #8b1538;
+        }
+
+        .service-card p {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .service-price {
+            background: linear-gradient(135deg, #c9302c, #8b1538);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            font-weight: bold;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 5rem 0;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .gallery-item {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .gallery-image {
+            height: 350px;
+            background: linear-gradient(45deg, #c9302c, #8b1538, #5d1049);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-image::before {
+            content: '👗';
+            font-size: 5rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.3;
+        }
+
+        .gallery-content {
+            padding: 2rem;
+        }
+
+        .gallery-content h3 {
+            color: #8b1538;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .gallery-content p {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .gallery-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #c9302c, #8b1538);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(135deg, #c9302c, #8b1538);
+            color: white;
+            border-radius: 20px;
+            padding: 4rem;
+            text-align: center;
+            margin-top: 5rem;
+        }
+
+        .contact h2 {
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact-item {
+            background: rgba(255,255,255,0.15);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-item h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .contact-item p {
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: white;
+            color: #8b1538;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,255,255,0.3);
+            margin-top: 2rem;
+        }
+
+        .btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255,255,255,0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav li {
+                margin: 0.5rem 0;
+            }
+            
+            section {
+                padding: 3rem 0;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Atelier Kenza</h1>
+                <p>Créateur de Vêtements de Mariage Marocains</p>
+                <div class="hero-subtitle">
+                    Caftans, Takchitas et Costumes Traditionnels sur Mesure
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#about">À Propos</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#gallery">Nos Créations</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">À Propos de l'Atelier Kenza</h2>
+            <div class="about">
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>Passionnée par l'art vestimentaire marocain depuis plus de 15 ans, je crée des vêtements de mariage traditionnels qui allient authenticité et élégance moderne.</p>
+                        
+                        <p>Mon atelier situé au cœur de Casablanca se spécialise dans la confection sur mesure de caftans, takchitas, robes de henné et costumes masculins traditionnels. Chaque pièce est brodée à la main selon les techniques ancestrales.</p>
+                        
+                        <p>De la sélection des tissus nobles aux finitions les plus délicates, je accompagne mes clientes dans la création de leur tenue de rêve pour les plus beaux jours de leur vie.</p>
+                        
+                        <div class="about-highlight">
+                            <h3>15 ans d'expérience</h3>
+                            <p>Plus de 500 créations réalisées • Broderie main traditionnelle • Tissus nobles importés</p>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <div class="about-image-content">
+                            <h3>Artisanat d'Excellence</h3>
+                            <p>Broderie traditionnelle<br>Finitions luxueuses<br>Coupe parfaite</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="container">
+            <h2 class="section-title">Nos Services</h2>
+            <div class="services">
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">👗</div>
+                        <h3>Caftans de Mariée</h3>
+                        <p>Caftans luxueux brodés main avec fils d'or et d'argent. Tissus en soie, velours ou satin. Coupe traditionnelle ou moderne selon vos préférences.</p>
+                        <div class="service-price">À partir de 3500 DH</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">👘</div>
+                        <h3>Takchitas d'Exception</h3>
+                        <p>Takchitas deux pièces avec broderies complexes, sequins et perles. Modèles uniques inspirés des traditions de Fès, Tétouan et Salé.</p>
+                        <div class="service-price">À partir de 4200 DH</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🎨</div>
+                        <h3>Robes de Henné</h3>
+                        <p>Créations spéciales pour la cérémonie du henné. Couleurs vives, broderies berbères, style moderne ou traditionnel selon la région.</p>
+                        <div class="service-price">À partir de 2800 DH</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🤵</div>
+                        <h3>Costumes Masculins</h3>
+                        <p>Jabadors, burnous et costumes traditionnels pour hommes. Tissus nobles, broderies discrètes, coupe impeccable.</p>
+                        <div class="service-price">À partir de 2500 DH</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">✨</div>
+                        <h3>Retouches & Ajustements</h3>
+                        <p>Service de retouches pour une coupe parfaite. Ajustements après essayages, modifications de style, réparations délicates.</p>
+                        <div class="service-price">À partir de 300 DH</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">👑</div>
+                        <h3>Accessoires Assortis</h3>
+                        <p>Ceintures brodées, bijoux traditionnels, chaussures assorties, voiles et coiffes pour compléter votre tenue.</p>
+                        <div class="service-price">À partir de 500 DH</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <div class="container">
+            <h2 class="section-title">Nos Créations</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <div>Caftan Royal Brodé Or</div>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Caftan de Mariée - Style Fassi</h3>
+                        <p>Caftan en velours bordeaux avec broderies dorées traditionnelles. Manches longues, coupe droite, finitions luxueuses avec passementerie.</p>
+                        <div class="gallery-tags">
+                            <span class="tag">Velours</span>
+                            <span class="tag">Broderie Or</span>
+                            <span class="tag">Style Fès</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <div>Takchita Moderne Sequins</div>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Takchita Deux Pièces - Tétouan</h3>
+                        <p>Takchita en satin rose poudré avec broderies perlées et sequins. Style moderne avec influences traditionnelles du nord du Maroc.</p>
+                        <div class="gallery-tags">
+                            <span class="tag">Satin</span>
+                            <span class="tag">Perles</span>
+                            <span class="tag">Tétouan</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <div>Robe Henné Berbère</div>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Robe de Henné - Style Berbère</h3>
+                        <p>Robe colorée avec motifs berbères traditionnels. Broderies aux couleurs vives, style décontracté pour la cérémonie du henné.</p>
+                        <div class="gallery-tags">
+                            <span class="tag">Berbère</span>
+                            <span class="tag">Multicolore</span>
+                            <span class="tag">Henné</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <div>Jabador Masculin Luxe</div>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Jabador pour Marié</h3>
+                        <p>Jabador élégant en lin beige avec broderies discrètes. Coupe moderne et confortable, parfait pour les mariés soucieux du style.</p>
+                        <div class="gallery-tags">
+                            <span class="tag">Lin</span>
+                            <span class="tag">Marié</span>
+                            <span class="tag">Moderne</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <div>Caftan Moderne Minimaliste</div>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Caftan Contemporain</h3>
+                        <p>Design moderne épuré en crêpe blanc avec broderies géométriques argentées. Parfait pour un mariage moderne avec touches traditionnelles.</p>
+                        <div class="gallery-tags">
+                            <span class="tag">Crêpe</span>
+                            <span class="tag">Moderne</span>
+                            <span class="tag">Argent</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <div>Takchita Traditionnelle Rabat</div>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Takchita Traditionnelle - Rabat</h3>
+                        <p>Takchita classique en brocart doré avec broderies traditionnelles de Rabat. Pièce d'exception pour une mariée authentique.</p>
+                        <div class="gallery-tags">
+                            <span class="tag">Brocart</span>
+                            <span class="tag">Traditionnel</span>
+                            <span class="tag">Rabat</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact">
+        <div class="container">
+            <h2 class="section-title">Contactez l'Atelier</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 2rem;">Venez découvrir nos créations et discuter de votre projet sur mesure</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h3>📞 Téléphone</h3>
+                    <p>+212 6 87 65 43 21<br>+212 5 22 45 67 89</p>
+                </div>
+                <div class="contact-item">
+                    <h3>📍 Atelier</h3>
+                    <p>67 Rue des Artisans<br>Ancienne Médina, Casablanca</p>
+                </div>
+                <div class="contact-item">
+                    <h3>🕐 Horaires</h3>
+                    <p>Mar-Sam: 10h-19h<br>Dim: 14h-18h</p>
+                </div>
+                <div class="contact-item">
+                    <h3>📧 Email</h3>
+                    <p>contact@atelierkenza.ma<br>commandes@atelierkenza.ma</p>
+                </div>
+            </div>
+            <a href="tel:+212687654321" class="btn">Prendre Rendez-vous</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Atelier Kenza - Tous droits réservés | Créateur de Vêtements de Mariage Marocains</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation fluide
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animation au scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.service-card, .gallery-item');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight * 0.8) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        }
+
+        // Initialisation
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+
+        // Style initial pour animations
+        document.querySelectorAll('.service-card, .gallery-item').forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(30px)';
+            element.style.transition = 'all 0.6s ease';
+        });
+    </script>
+</body>
+</html>

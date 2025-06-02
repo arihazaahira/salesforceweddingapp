@@ -4,9 +4,9 @@ import CoupleFormView from '../services/CoupleFormView.js';
 
 // Configuration Salesforce
 const SALESFORCE_CONFIG = {
-  instanceUrl: process.env.REACT_APP_SF_INSTANCE_URL,
-  apiVersion: 'v56.0',
-  accessToken: process.env.REACT_APP_SF_ACCESS_TOKEN,
+  accessToken: "00DgK0000029e5F!AQEAQJkTtRAffTcCUqbYXvB.Svdgjb2BfRUhD2qOZBW8gvjyn0Cvy_8pKZlQBLm8Ww.xP.pZcahtonXAuKaUSm.Ed2Az8PB0",
+  instanceUrl: 'https://orgfarm-c407668048-dev-ed.develop.my.salesforce.com',
+  apiVersion: 'v58.0'
 };
 
 // Types de prestataires

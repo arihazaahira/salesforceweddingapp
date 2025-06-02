@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DJ Youssef - Spécialiste Mariages Marocains</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #ff6b35, #f7931e, #ffcc02);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="25" cy="25" r="3" fill="rgba(255,255,255,0.2)"/><circle cx="75" cy="25" r="3" fill="rgba(255,255,255,0.2)"/><circle cx="25" cy="75" r="3" fill="rgba(255,255,255,0.2)"/><circle cx="75" cy="75" r="3" fill="rgba(255,255,255,0.2)"/><circle cx="50" cy="50" r="5" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            background-size: 60px 60px;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .logo {
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo h1 {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            font-weight: bold;
+        }
+
+        .logo p {
+            font-size: 1.4rem;
+            font-weight: bold;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 107, 53, 0.95);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav li {
+            margin: 0 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 0;
+            margin: 2rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            color: #ff6b35;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(to right, #ff6b35, #f7931e);
+            border-radius: 2px;
+        }
+
+        /* About Section */
+        .about {
+            background: white;
+            border-radius: 20px;
+            padding: 4rem;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #555;
+            text-align: justify;
+        }
+
+        .about-highlight {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .about-highlight h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .about-image {
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #ffcc02);
+            height: 400px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image::before {
+            content: '🎧';
+            font-size: 6rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.3;
+            animation: rotate 8s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .about-image-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Services Section */
+        .services {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            padding: 5rem 0;
+            border-radius: 20px;
+            color: white;
+        }
+
+        .services .section-title {
+            color: #ffcc02;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: linear-gradient(135deg, #2d2d2d, #3d3d3d);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #ff6b35;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(to right, #ff6b35, #f7931e, #ffcc02);
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.3);
+        }
+
+        .service-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: #ffcc02;
+        }
+
+        .service-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #ff6b35;
+        }
+
+        .service-card p {
+            font-size: 1.1rem;
+            color: #ccc;
+            line-height: 1.8;
+        }
+
+        .service-price {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .gallery-item {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.4s ease;
+            color: white;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.3);
+        }
+
+        .gallery-image {
+            height: 300px;
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #ffcc02);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-image::before {
+            content: '🎵';
+            font-size: 5rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.3;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .gallery-content {
+            padding: 2rem;
+        }
+
+        .gallery-content h3 {
+            color: #ff6b35;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .gallery-content p {
+            color: #ccc;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .gallery-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .play-button {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .play-button:hover {
+            background: #f7931e;
+            transform: scale(1.05);
+        }
+
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            border-radius: 20px;
+            padding: 4rem;
+            text-align: center;
+            margin-top: 5rem;
+        }
+
+        .contact h2 {
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact-item {
+            background: rgba(255,255,255,0.15);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-item h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .contact-item p {
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: white;
+            color: #ff6b35;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,255,255,0.3);
+            margin-top: 2rem;
+        }
+
+        .btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255,255,255,0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav li {
+                margin: 0.5rem 0;
+            }
+            
+            section {
+                padding: 3rem 0;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>DJ Youssef</h1>
+                <p>Spécialiste Mariages Marocains</p>
+                <div class="hero-subtitle">
+                    Animation Musicale Orientale • Chaâbi • Andalou • Moderne
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#about">À Propos</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#gallery">Mes Prestations</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">À Propos de DJ Youssef</h2>
+            <div class="about">
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>Passionné de musique orientale depuis plus de 10 ans, je suis spécialisé dans l'animation de mariages marocains traditionnels et modernes.</p>
+                        
+                        <p>Ma connaissance approfondie de la musique chaâbi, andalouse, raï et des tubes orientaux me permet de créer l'ambiance parfaite pour chaque moment de votre célébration. Du cocktail à la soirée dansante, je sais faire vibrer vos invités.</p>
+                        
+                        <p>Équipé d'un matériel professionnel haut de gamme, je propose un service complet avec éclairage LED, sonorisation puissante et micros sans fil pour toutes vos interventions.</p>
+                        
+                        <div class="about-highlight">
+                            <h3>10 ans d'expérience</h3>
+                            <p>Plus de 200 mariages animés • Matériel professionnel • Playlist sur mesure</p>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <div class="about-image-content">
+                            <h3>Animation Professionnelle</h3>
+                            <p>Matériel haut de gamme<br>Éclairage LED<br>Sonorisation puissante</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="container">
+            <div class="services">
+                <h2 class="section-title">Mes Services</h2>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">🎵</div>
+                        <h3>Animation Mariage Complet</h3>
+                        <p>Animation de 8h avec playlist personnalisée, micro pour discours, éclairage d'ambiance LED et sonorisation professionnelle pour 150 personnes.</p>
+                        <div class="service-price">3500 DH</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🎤</div>
+                        <h3>Cocktail & Vin d'Honneur</h3>
+                        <p>Animation de 3h avec musique d'ambiance orientale, jazz et lounge. Sonorisation discrète pour vos moments d'échange et de convivialité.</p>
+                        <div class="service-price">1500 DH</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">💃</div>
+                        <h3>Soirée Dansante Orientale</h3>
+                        <p>Soirée de 5h dédiée à la danse avec les meilleurs hits orientaux, chaâbi, raï et tubes modernes. Éclairage dynamique inclus.</p>
+                        <div class="service-price">2500 DH</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🎭</div>
+                        <h3>Cérémonie du Henné</h3>
+                        <p>Animation spécialisée henné avec musique berbère, andalouse et ambiance traditionnelle. Micro disponible pour les chants.</p>
+                        <div class="service-price">1800 DH</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🔊</div>
+                        <h3>Location Matériel Seul</h3>
+                        <p>Location d'enceintes, micros, éclairage LED et table de mixage pour vos événements en autonomie. Livraison incluse.</p>
+                        <div class="service-price">800 DH</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🎼</div>
+                        <h3>Playlist Personnalisée</h3>
+                        <p>Création d'une playlist sur mesure selon vos goûts musicaux et les traditions de votre région. Consultation préalable incluse.</p>
+                        <div class="service-price">500 DH</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <div class="container">
+            <h2 class="section-title">Mes Prestations</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <div>Mariage Royal - Casablanca</div>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Mariage Traditionnel Fassi</h3>
+                        <p>Animation complète de 3 jours avec musique andalouse, chaâbi et tubes orientaux. 300 invités dans un cadre royal avec éclairage professionnel.</p>
+                        <div class="gallery-tags">
+                            <span class="tag">Andalou</span>
+                            <span class="tag">Chaâbi</span>
+                            <span class="tag">3 jours</span>
+                        </div>
+                        <button class="play-button">🎵 Écouter Mix</button>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <div>Soirée Henné - Marrakech</div>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Henné Berbère Authentique</h3>
+                        <p>Ambiance traditionnelle avec musique berbère du Haut-Atlas, chants amazighs et rythmiques gnawa. Soirée mémorable de 4h.</p>
+                        <div class="gallery-tags">
+                            <span class="tag">Berbère</span>
+                            <span class="tag">Gnawa</span>
+                            <span class="tag">Traditionnel</span>
+                        </div>
+                        <button class="play-button">🎵 Écouter Mix</button>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <div>Mariage Moderne - Rabat</div>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Fusion Oriental-International</h3>
+                        <p>Mariage moderne avec mix oriental-occidental. Raï, pop française, tubes internationaux et classiques orientaux pour tous les goûts.</p>
+                        <div class="gallery-tags">
+                            <span class="tag">Raï</span>
+                            <span class="tag">Pop</span>
+                            <span class="tag">Moderne</span>
+                        </div>
+                        <button class="play-button">🎵 Écouter Mix</button>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <div>Wedding Party - Agadir</div>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Soirée Dansante Orientale</h3>
+                        <p>Pure soirée dansante avec les plus grands hits orientaux, tubes de Amr Diab, Fairuz, et les derniers succès du Moyen-Orient.</p>
+                        <div class="gallery-tags">
+                            <span class="tag">Hits Orientaux</span>
+                            <span class="tag">Danse</span>
+                            <span class="tag">Festif</span>
+                        </div>
+                        <button class="play-button">🎵 Écouter Mix</button>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <div>Cocktail Chic - Tanger</div>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Ambiance Cocktail Raffinée</h3>
+                        <p>Cocktail d'accueil avec sélection jazz oriental, malouf tunisien et musique d'ambiance sophisticated pour un moment élégant.</p>
+                        <div class="gallery-tags">
+                            <span class="tag">Jazz Oriental</span>
+                            <span class="tag">Malouf</span>
+                            <span class="tag">Élégant</span>
+                        </div>
+                        <button class="play-button">🎵 Écouter Mix</button>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <div>Mariage Rifain - Al Hoceima</div>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Tradition du Nord Marocain</h3>
+                        <p>Mariage rifain avec musique traditionnelle du Rif, chants en tamazight et danses folkloriques. Ambiance authentique garantie.</p>
+                        <div class="gallery-tags">
+                            <span class="tag">Rifain</span>
+                            <span class="tag">Tamazight</span>
+                            <span class="tag">Folklore</span>
+                        </div>
+                        <button class="play-button">🎵 Écouter Mix</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact">
+        <div class="container">
+            <h2 class="section-title">Réservez Votre DJ</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 2rem;">Discutons de votre projet musical et créons l'ambiance parfaite</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h3>📞 Téléphone</h3>
+                    <p>+212 6 55 44 33 22<br>+212 5 22 11 88 99</p>
+                </div>
+                <div class="contact-item">
+                    <h3>📍 Zone d'Intervention</h3>
+                    <p>Casablanca, Rabat, Marrakech<br>Tout le Maroc sur demande</p>
+                </div>
+                <div class="contact-item">
+                    <h3>🕐 Disponibilité</h3>
+                    <p>7j/7 pour vos événements<br>Réponse sous 24h</p>
+                </div>
+                <div class="contact-item">
+                    <h3>📧 Email</h3>
+                    <p>dj.youssef@gmail.com<br>booking.djyoussef@outlook.com</p>
+                </div>
+            </div>
+            <a href="tel:+212655443322" class="btn">Réserver Maintenant</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 DJ Youssef - Tous droits réservés | Spécialiste Animation Mariages Marocains</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation fluide
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animation au scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.service-card, .gallery-item');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight * 0.8) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        }
+
+        // Effet boutons play
+        document.querySelectorAll('.play-button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.innerHTML = '⏸️ En cours...';
+                setTimeout(() => {
+                    this.innerHTML = '🎵 Écouter Mix';
+                }, 2000);
+            });
+        });
+
+        // Initialisation
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+
+        // Style initial pour animations
+        document.querySelectorAll('.service-card, .gallery-item').forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(30px)';
+            element.style.transition = 'all 0.6s ease';
+        });
+    </script>
+</body>
+</html>
