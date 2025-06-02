@@ -9,7 +9,8 @@ import FeedbackPage from './FeedbackPage';
 import CoupleModal from './CoupleModal';
 import CeremonyModal from './CeremonyModal';
 import { getWeddingById } from '../services/WeddingService'; // Tu dois créer cette fonction dans WeddingService.js
-import '../styles/WeddingDetails.css'; // Optionnel
+import '../styles/WeddingDetails.css';
+import { Calendar as CalendarIcon, MapPin as MapPinIcon, Users as UsersIcon } from 'lucide-react'; // Optionnel
 
 const WeddingDetails = () => {
   const { id } = useParams();
@@ -42,43 +43,55 @@ const WeddingDetails = () => {
   if (!wedding) return <div>Aucune donnée trouvée.</div>;
 
   return (
-    <div className="wedding-details">
-      <h2>Cérémonie : {wedding.Name}</h2>
-      <p><strong>Date :</strong> {wedding.Date_and_Time__c}</p>
-      <p><strong>Lieu :</strong> {wedding.Location__c || '-'}</p>
-      <p><strong>Description :</strong> {wedding.Description__c || '-'}</p>
-
-      <div className="tabs">
-        <button onClick={() => setSection('invites')}>Invités</button>
-        <button onClick={() => setSection('planning')}>Planning</button>
-        <button onClick={() => setSection('prestataires')}>Prestataires</button>
-        <button onClick={() => setSection('taches')}>Tâches</button>
-        <button onClick={() => setSection('feedback')}>Feedback</button>
+    <div className="wedding-details-container">
+      {/* En-tête avec infos de la cérémonie */}
+      <div className="wedding-header">
+        <h1 className="wedding-title">{wedding.Name}</h1>
+        
+        <div className="wedding-meta">
+          <div className="meta-item">
+            <CalendarIcon className="meta-icon" />
+            <span>{new Date(wedding.Date_and_Time__c).toLocaleDateString('fr-FR', { 
+              weekday: 'long', 
+              day: 'numeric', 
+              month: 'long', 
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            })}</span>
+          </div>
+          
+          <div className="meta-item">
+            <MapPinIcon className="meta-icon" />
+            <span>{wedding.Location__c || 'Lieu non spécifié'}</span>
+          </div>
+        </div>
+        
+        {wedding.Description__c && (
+          <div className="wedding-description">
+            <p>{wedding.Description__c}</p>
+          </div>
+        )}
       </div>
-
+  
+      {/* Navigation par onglets stylisée */}
+      <div className="tabs-container">
+        <nav className="tabs-navigation">
+          <button 
+            className={`tab-button ${section === 'prestataires' ? 'active' : ''}`}
+            onClick={() => setSection('prestataires')}
+          >
+            <UsersIcon className="tab-icon" />
+            <span>Prestataires</span>
+          </button>
+        </nav>
+      </div>
+  
+      {/* Contenu de la section */}
       <div className="section-content">
-      {section === 'invites' && <GuestTable weddingId={id} />}
-      {section === 'planning' && <Planning weddingId={id} />}
         {section === 'prestataires' && <Providerlist weddingId={id} />}
-        {section === 'taches' && <TaskChecklist weddingId={id} />}
-        {section === 'feedback' && <FeedbackPage weddingId={id} />}
       </div>
-
-      {/* Modal components */}
-      {ceremonyModalOpen && (
-        <CeremonyModal 
-          isOpen={ceremonyModalOpen} 
-          onClose={() => setCeremonyModalOpen(false)}
-        />
-      )}
-      
-      {coupleModalOpen && (
-        <CoupleModal 
-          isOpen={coupleModalOpen} 
-          onClose={() => setCoupleModalOpen(false)}
-        />
-      )}
-    </div> 
+    </div>
   );
 };
 
